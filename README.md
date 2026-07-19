@@ -52,10 +52,9 @@ O pagamento Pix exige um backend para proteger as credenciais da API.
    ```
 3. Instale as dependências e inicie o servidor:
    ```bash
-   cd server
-   npm install
    npm start
    ```
+   Ou manualmente: `cd server && npm install && npm start`
 4. Acesse `http://localhost:3000`, escolha um produto, clique em **Comprar agora** e finalize o checkout com Pix.
 
 O servidor serve os arquivos estáticos e expõe:

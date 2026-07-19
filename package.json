@@ -1,0 +1,7 @@
+{
+  "name": "havan-clone",
+  "private": true,
+  "scripts": {
+    "start": "cd server && npm install && npm start"
+  }
+}

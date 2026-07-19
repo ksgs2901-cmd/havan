@@ -2920,7 +2920,22 @@ main {
     to { transform: rotate(360deg); }
 }
 
-.checkout-back-link {
+.checkout-form-error {
+    margin-top: 12px;
+    color: #dc2626;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.checkout-form-error[hidden] {
+    display: none;
+}
+
+.checkout-summary-img {
+    object-fit: contain;
+    background: var(--bg-light);
+}
     background: none;
     border: none;
     color: var(--primary-blue);
