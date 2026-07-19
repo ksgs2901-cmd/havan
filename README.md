@@ -58,12 +58,12 @@ Repositório: **https://github.com/ksgs2901-cmd/havan**
 1. Acesse [vercel.com](https://vercel.com) e faça login com GitHub
 2. Clique em **Add New → Project**
 3. Importe o repositório `ksgs2901-cmd/havan`
-4. Em **Environment Variables**, adicione:
+4. Em **Environment Variables**, adicione (obrigatório):
    - `BLACKCAT_SECRET_KEY` = sua chave `sk_live_...`
    - `BLACKCAT_PUBLIC_KEY` = sua chave `pk_live_...` (opcional)
 5. Clique em **Deploy**
 
-Pronto — o site fica no ar em `https://seu-projeto.vercel.app` com checkout Pix funcionando.
+> **Importante:** sem a variável `BLACKCAT_SECRET_KEY`, o checkout Pix não funciona.
 
 ### Deploy no Render (alternativa)
 
