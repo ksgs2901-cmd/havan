@@ -23,6 +23,47 @@ function resolveApiBase() {
 }
 
 const API_BASE = resolveApiBase();
+const API_ENDPOINTS = {
+    health: ['/api/health', '/api/health.php'],
+    create: ['/api/pix/create', '/api/pix/create.php'],
+    status: (id) => [`/api/pix/status/${id}`, `/api/pix/status.php?id=${encodeURIComponent(id)}`]
+};
+
+async function fetchApi(paths, options = {}) {
+    let lastError = null;
+
+    for (const path of paths) {
+        try {
+            const response = await fetch(API_BASE + path, options);
+            let data = {};
+
+            try {
+                const text = await response.text();
+                data = text ? JSON.parse(text) : {};
+            } catch {
+                lastError = new Error('offline');
+                continue;
+            }
+
+            if (response.ok) {
+                return { response, data };
+            }
+
+            if (data.error && response.status >= 400 && response.status < 500) {
+                throw new Error(data.error);
+            }
+
+            lastError = new Error(data.error || `Erro HTTP ${response.status}`);
+        } catch (err) {
+            if (err.message && err.message !== 'offline') {
+                throw err;
+            }
+            lastError = err;
+        }
+    }
+
+    throw lastError || new Error('Servidor indisponível. Clique duas vezes em iniciar-site.bat para abrir a loja.');
+}
 
 function formatBRL(value) {
     return 'R$ ' + value.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\,)/g, '.');
@@ -142,7 +183,7 @@ function getShippingData() {
 
 function validateCheckoutData() {
     if (window.location.protocol === 'file:') {
-        return 'Abra o site em http://localhost:3000 (execute "npm start" na raiz do projeto).';
+        return 'Clique duas vezes em iniciar-site.bat para abrir a loja corretamente.';
     }
 
     if (!subtotal || subtotal <= 0) {
@@ -251,54 +292,47 @@ function renderPixQr(container, qrCodeBase64) {
     container.innerHTML = '<p class="pix-qr-fallback">QR Code indisponível. Use o código copia e cola abaixo.</p>';
 }
 
-async function parseJsonResponse(response) {
+async function parseJsonResponse(response, options = {}) {
     const text = await response.text();
     try {
         return text ? JSON.parse(text) : {};
     } catch {
-        if (window.location.protocol === 'file:') {
-            throw new Error('Abra o site em http://localhost:3000 (execute "npm start" na raiz do projeto).');
+        if (options.allowHtmlError) {
+            throw new Error('offline');
         }
-        throw new Error('Servidor indisponível. Na raiz do projeto execute "npm start" e acesse http://localhost:3000');
+        throw new Error('Servidor indisponível. Clique duas vezes em iniciar-site.bat para abrir a loja.');
     }
 }
 
 async function createPixPayment() {
     const shipping = getShippingData();
 
-    let response;
-    try {
-        response = await fetch(API_BASE + '/api/pix/create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                amount: subtotal,
-                description: productName + ' (x' + productQty + ')',
-                productName,
-                productQty,
-                email: shipping.email,
-                cpf: shipping.cpf,
-                name: shipping.name,
-                phone: shipping.phone,
-                shipping: {
-                    cep: shipping.cep,
-                    numero: shipping.numero,
-                    endereco: shipping.endereco,
-                    bairro: shipping.bairro,
-                    cidade: shipping.cidade,
-                    estado: shipping.estado,
-                    complemento: document.getElementById('fComplemento')?.value || ''
-                }
-            })
-        });
-    } catch {
-        throw new Error('Não foi possível conectar ao servidor. Execute "npm start" na pasta server.');
-    }
+    const { data } = await fetchApi(API_ENDPOINTS.create, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            amount: subtotal,
+            description: productName + ' (x' + productQty + ')',
+            productName,
+            productQty,
+            email: shipping.email,
+            cpf: shipping.cpf,
+            name: shipping.name,
+            phone: shipping.phone,
+            shipping: {
+                cep: shipping.cep,
+                numero: shipping.numero,
+                endereco: shipping.endereco,
+                bairro: shipping.bairro,
+                cidade: shipping.cidade,
+                estado: shipping.estado,
+                complemento: document.getElementById('fComplemento')?.value || ''
+            }
+        })
+    });
 
-    const data = await parseJsonResponse(response);
-
-    if (!response.ok) {
-        throw new Error(data.error || 'Erro ao criar pagamento Pix');
+    if (data.error) {
+        throw new Error(data.error);
     }
 
     return data;
@@ -339,11 +373,10 @@ function startPixPolling(paymentId) {
         if (!currentPaymentId) return;
 
         try {
-            const response = await fetch(API_BASE + '/api/pix/status/' + encodeURIComponent(currentPaymentId));
-            const data = await parseJsonResponse(response);
+            const { data } = await fetchApi(API_ENDPOINTS.status(currentPaymentId));
 
-            if (!response.ok) {
-                throw new Error(data.error || 'Erro ao consultar pagamento');
+            if (data.error) {
+                throw new Error(data.error);
             }
 
             if (data.status === 'approved') {
@@ -418,10 +451,10 @@ async function checkServerOnLoad() {
     if (!checkoutFormError) return;
 
     try {
-        const response = await fetch(API_BASE + '/api/health', { method: 'GET' });
-        if (!response.ok) throw new Error('offline');
+        await fetchApi(API_ENDPOINTS.health, { method: 'GET' });
+        clearFormError();
     } catch {
-        showFormError('Servidor offline. Execute "npm start" na raiz do projeto e acesse http://localhost:3000');
+        showFormError('Para usar o checkout, clique duas vezes em iniciar-site.bat (Windows) ou execute ./iniciar-site.sh');
     }
 }
 

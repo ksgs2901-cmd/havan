@@ -12,9 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
+    const { getApiKey } = require('./lib/blackcat');
     res.json({
         ok: true,
-        pixConfigured: Boolean(process.env.BLACKCAT_SECRET_KEY || process.env.BLACKCAT_API_KEY)
+        pixConfigured: Boolean(getApiKey())
     });
 });
 

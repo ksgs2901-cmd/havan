@@ -28,39 +28,28 @@ Este projeto é uma réplica fiel do site da Havan, incluindo:
 
 ## 🚀 Como usar
 
-### Apenas o site (estático)
+### Opção 1 — Um clique (recomendado)
 
-1. Abra o arquivo `index.html` em um navegador web
-2. Ou use um servidor local:
-   ```bash
-   # Com Python
-   python -m http.server 8000
-   
-   # Com Node.js (http-server)
-   npx http-server
-   ```
+**Windows:** clique duas vezes em `iniciar-site.bat`  
+**Mac/Linux:** execute `./iniciar-site.sh`
 
-### Checkout com Pix real (BlackCat)
+O navegador abre automaticamente em `http://localhost:3000`. Mantenha a janela aberta enquanto usa a loja.
 
-O pagamento Pix exige um backend para proteger as credenciais da API.
+### Opção 2 — Hospedagem com PHP (Hostinger, Locaweb, etc.)
 
-1. Obtenha suas chaves no painel da [BlackCat](https://docs.blackcatoficial.com).
-2. Configure as variáveis de ambiente:
-   ```bash
-   cp .env.example .env
-   # Edite .env e cole sua BLACKCAT_SECRET_KEY (sk_live_...)
-   ```
-3. Instale as dependências e inicie o servidor:
-   ```bash
-   npm start
-   ```
-   Ou manualmente: `cd server && npm install && npm start`
-4. Acesse `http://localhost:3000`, escolha um produto, clique em **Comprar agora** e finalize o checkout com Pix.
+1. Envie todos os arquivos para a hospedagem
+2. Copie `.env.example` para `.env` e configure `BLACKCAT_SECRET_KEY`
+3. O checkout Pix funciona via `api/pix/*.php` automaticamente
 
-O servidor serve os arquivos estáticos e expõe:
+### Opção 3 — Terminal
 
-- `POST /api/pix/create` — cria cobrança Pix na BlackCat (QR Code + copia e cola)
-- `GET /api/pix/status/:paymentId` — consulta status do pagamento
+```bash
+npm start
+```
+
+Acesse `http://localhost:3000`
+
+**Importante:** não abra o `index.html` direto no navegador — o Pix precisa do servidor.
 
 ## 📁 Estrutura de Arquivos
 
