@@ -5,6 +5,8 @@ const productPrice = parseFloat(params.get('price')) || 0;
 const productImage = params.get('image') || 'banner-havan.png';
 const productQty = parseInt(params.get('qty')) || 1;
 
+const API_BASE = window.location.origin;
+
 function formatBRL(value) {
     return 'R$ ' + value.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\,)/g, '.');
 }
@@ -63,108 +65,221 @@ function goToStep(n) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function getShippingData() {
+    return {
+        name: document.getElementById('fName')?.value?.trim() || '',
+        cpf: document.getElementById('fCpf')?.value || '',
+        email: document.getElementById('fEmail')?.value?.trim() || '',
+        phone: document.getElementById('fPhone')?.value || '',
+        cep: document.getElementById('fCep')?.value || '',
+        numero: document.getElementById('fNumero')?.value || '',
+        endereco: document.getElementById('fEndereco')?.value || '',
+        bairro: document.getElementById('fBairro')?.value || '',
+        cidade: document.getElementById('fCidade')?.value || '',
+        estado: document.getElementById('fEstado')?.value || ''
+    };
+}
+
 // ---- Etapa 1: formulário de entrega ----
 const shippingForm = document.getElementById('shippingForm');
 if (shippingForm) {
-    shippingForm.addEventListener('submit', (e) => {
+    shippingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!shippingForm.checkValidity()) {
             shippingForm.reportValidity();
             return;
         }
-        goToStep(2);
-        startPixSimulation();
+
+        const submitBtn = shippingForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn?.textContent || '';
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gerando Pix...';
+        }
+
+        try {
+            goToStep(2);
+            await startPixPayment();
+        } catch (err) {
+            goToStep(1);
+            showPixError(err.message || 'Não foi possível gerar o pagamento Pix.');
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        }
     });
 }
 
 const backToShippingBtn = document.getElementById('backToShipping');
 if (backToShippingBtn) {
-    backToShippingBtn.addEventListener('click', () => goToStep(1));
+    backToShippingBtn.addEventListener('click', () => {
+        stopPixPolling();
+        goToStep(1);
+    });
 }
 
-// ---- Etapa 2: geração do Pix (simulado) ----
-function generatePixCode() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let random = '';
-    for (let i = 0; i < 32; i++) random += chars[Math.floor(Math.random() * chars.length)];
-    return 'PIXSIMULACAO' + random;
+// ---- Etapa 2: pagamento Pix via API ----
+let pixPollInterval = null;
+let currentPaymentId = null;
+
+function showPixError(message) {
+    const pixStatus = document.getElementById('pixStatus');
+    if (!pixStatus) return;
+
+    pixStatus.classList.remove('confirmed');
+    pixStatus.classList.add('error');
+    pixStatus.innerHTML = '<span>⚠ ' + message + '</span>';
 }
 
-function renderFakeQr(container) {
+function showPixWaiting() {
+    const pixStatus = document.getElementById('pixStatus');
+    if (!pixStatus) return;
+
+    pixStatus.classList.remove('confirmed', 'error');
+    pixStatus.innerHTML = '<div class="pix-spinner"></div><span>Aguardando confirmação do pagamento...</span>';
+}
+
+function renderPixQr(container, qrCodeBase64) {
     if (!container) return;
+
     container.innerHTML = '';
-    const size = 21;
-    const grid = Array.from({ length: size }, () => new Array(size).fill(0));
+    container.classList.add('pix-qr--image');
 
-    // Ruído aleatório para lembrar a "área de dados" de um QR (não é um código real)
-    for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-            grid[y][x] = Math.random() < 0.45 ? 1 : 0;
-        }
+    if (qrCodeBase64) {
+        const img = document.createElement('img');
+        img.src = 'data:image/png;base64,' + qrCodeBase64;
+        img.alt = 'QR Code Pix';
+        img.width = 200;
+        img.height = 200;
+        container.appendChild(img);
+        return;
     }
 
-    // Quadrados de referência nos cantos, como em um QR de verdade
-    function drawFinder(ox, oy) {
-        for (let y = 0; y < 7; y++) {
-            for (let x = 0; x < 7; x++) {
-                const border = (x === 0 || x === 6 || y === 0 || y === 6);
-                const innerFill = (x >= 2 && x <= 4 && y >= 2 && y <= 4);
-                grid[oy + y][ox + x] = (border || innerFill) ? 1 : 0;
-            }
-        }
-    }
-    drawFinder(0, 0);
-    drawFinder(size - 7, 0);
-    drawFinder(0, size - 7);
-
-    for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-            const cell = document.createElement('span');
-            if (grid[y][x]) cell.className = 'pix-qr-cell';
-            container.appendChild(cell);
-        }
-    }
+    container.classList.remove('pix-qr--image');
+    container.innerHTML = '<p class="pix-qr-fallback">QR Code indisponível. Use o código copia e cola abaixo.</p>';
 }
 
-let pixTimeout = null;
+async function createPixPayment() {
+    const shipping = getShippingData();
 
-function startPixSimulation() {
+    const response = await fetch(API_BASE + '/api/pix/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            amount: subtotal,
+            description: productName + ' (x' + productQty + ')',
+            email: shipping.email,
+            cpf: shipping.cpf,
+            name: shipping.name
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || 'Erro ao criar pagamento Pix');
+    }
+
+    return data;
+}
+
+function stopPixPolling() {
+    if (pixPollInterval) {
+        clearInterval(pixPollInterval);
+        pixPollInterval = null;
+    }
+    currentPaymentId = null;
+}
+
+function confirmPixPayment(paymentId) {
+    stopPixPolling();
+
+    const pixStatus = document.getElementById('pixStatus');
+    if (pixStatus) {
+        pixStatus.classList.remove('error');
+        pixStatus.classList.add('confirmed');
+        pixStatus.innerHTML = '<span>✓ Pagamento identificado!</span>';
+    }
+
+    setTimeout(() => {
+        const orderNumber = document.getElementById('orderNumber');
+        if (orderNumber) {
+            orderNumber.textContent = '#HV' + String(paymentId).slice(-6).padStart(6, '0');
+        }
+        goToStep(3);
+    }, 1200);
+}
+
+function startPixPolling(paymentId) {
+    stopPixPolling();
+    currentPaymentId = paymentId;
+
+    const poll = async () => {
+        if (!currentPaymentId) return;
+
+        try {
+            const response = await fetch(API_BASE + '/api/pix/status/' + currentPaymentId);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao consultar pagamento');
+            }
+
+            if (data.status === 'approved') {
+                confirmPixPayment(data.paymentId);
+            } else if (data.status === 'cancelled' || data.status === 'rejected') {
+                stopPixPolling();
+                showPixError('Pagamento cancelado ou recusado. Gere um novo Pix para tentar novamente.');
+            }
+        } catch (err) {
+            console.error('Erro ao consultar status do Pix:', err);
+        }
+    };
+
+    poll();
+    pixPollInterval = setInterval(poll, 5000);
+}
+
+async function startPixPayment() {
     const pixCodeInput = document.getElementById('pixCode');
     const pixQr = document.getElementById('pixQr');
-    const pixStatus = document.getElementById('pixStatus');
 
-    if (pixCodeInput) pixCodeInput.value = generatePixCode();
-    renderFakeQr(pixQr);
-    if (pixStatus) {
-        pixStatus.classList.remove('confirmed');
-        pixStatus.innerHTML = '<div class="pix-spinner"></div><span>Aguardando confirmação do pagamento...</span>';
+    showPixWaiting();
+
+    if (pixCodeInput) pixCodeInput.value = '';
+    if (pixQr) {
+        pixQr.innerHTML = '<div class="pix-spinner"></div>';
+        pixQr.classList.remove('pix-qr--image');
     }
 
-    if (pixTimeout) clearTimeout(pixTimeout);
-    pixTimeout = setTimeout(() => {
-        if (pixStatus) {
-            pixStatus.classList.add('confirmed');
-            pixStatus.innerHTML = '<span>✓ Pagamento identificado!</span>';
-        }
-        setTimeout(() => {
-            const orderNumber = document.getElementById('orderNumber');
-            if (orderNumber) {
-                orderNumber.textContent = '#HV' + Math.floor(100000 + Math.random() * 900000);
-            }
-            goToStep(3);
-        }, 1200);
-    }, 6000);
+    const payment = await createPixPayment();
+
+    if (pixCodeInput) pixCodeInput.value = payment.qrCode || '';
+    renderPixQr(pixQr, payment.qrCodeBase64);
+
+    if (payment.status === 'approved') {
+        confirmPixPayment(payment.paymentId);
+        return;
+    }
+
+    startPixPolling(payment.paymentId);
 }
 
 const copyBtn = document.getElementById('pixCopyBtn');
 if (copyBtn) {
     copyBtn.addEventListener('click', () => {
         const code = document.getElementById('pixCode').value;
+        if (!code) return;
+
         const originalText = copyBtn.textContent;
         const onCopied = () => {
             copyBtn.textContent = 'Copiado!';
             setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
         };
+
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(code).then(onCopied).catch(() => {});
         } else {
