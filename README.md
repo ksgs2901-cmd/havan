@@ -51,6 +51,15 @@ Acesse `http://localhost:3000`
 
 **Importante:** não abra o `index.html` direto no navegador — o Pix precisa do servidor.
 
+### Deploy online (permanente)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ksgs2901-cmd/havan)
+
+1. Clique no botão acima
+2. Crie conta gratuita no Render (se não tiver)
+3. Adicione a variável `BLACKCAT_SECRET_KEY` com sua chave secreta
+4. Clique em **Deploy** — em ~2 min o site fica no ar com URL `*.onrender.com`
+
 ## 📁 Estrutura de Arquivos
 
 ```
