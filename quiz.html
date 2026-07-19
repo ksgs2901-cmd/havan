@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Havan | Ganhe até 20% de desconto</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-top">
+            <div class="container">
+                <button class="menu-toggle" aria-label="Menu">
+                    <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+
+                <a href="index.html" class="logo">
+                    <img src="https://www.havan.com.br/static/version1764669753/frontend/Havan/themeDefault/pt_BR/images/svg/logo-havan-slim-w.svg" alt="Havan | Tudo num só Lugar">
+                </a>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar na Havan" id="searchInput">
+                    <button class="search-button" aria-label="Buscar">
+                        <svg class="icon-search" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="user-nav">
+                    <button class="search-icon-mobile" aria-label="Buscar">
+                        <svg class="icon-search" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="account-button" aria-label="Minha Conta">
+                        <svg class="icon-user" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 10C12.7614 10 15 7.76142 15 5C15 2.23858 12.7614 0 10 0C7.23858 0 5 2.23858 5 5C5 7.76142 7.23858 10 10 10Z" fill="currentColor"/>
+                            <path d="M10 12C5.58172 12 2 14.6863 2 18V20H18V18C18 14.6863 14.4183 12 10 12Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <div class="account-text">
+                        <span>Olá, entre na conta ou</span>
+                        <span>cadastre-se</span>
+                    </div>
+                    <a href="#" class="cart-button" aria-label="Carrinho">
+                        <svg class="icon-cart" width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 2H4L4.4 5M6 13H16L19 6H4.4M6 13L4.4 5M6 13C4.89543 13 4 13.8954 4 15C4 16.1046 4.89543 17 6 17C7.10457 17 8 16.1046 8 15M16 13C14.8954 13 14 13.8954 14 15C14 16.1046 14.8954 17 16 17C17.1046 17 18 16.1046 18 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="header-location">
+            <div class="container">
+                <svg class="location-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C5.23858 0 3 2.23858 3 5C3 8.5 8 16 8 16C8 16 13 8.5 13 5C13 2.23858 10.7614 0 8 0ZM8 6.5C7.17157 6.5 6.5 5.82843 6.5 5C6.5 4.17157 7.17157 3.5 8 3.5C8.82843 3.5 9.5 4.17157 9.5 5C9.5 5.82843 8.82843 6.5 8 6.5Z" fill="currentColor"/>
+                </svg>
+                <span class="location-text">Enviar para</span>
+                <span class="location-placeholder">Digite o CEP</span>
+                <span class="location-loading">Carregando</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <img src="https://www.havan.com.br/static/version1764669753/frontend/Havan/themeDefault/pt_BR/images/svg/logo-havan-slim-sidebar.svg" alt="HAVAN" class="mobile-menu-logo">
+                <button class="mobile-menu-close" aria-label="Fechar menu" id="closeMobileMenu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-user">
+                    <a href="#" class="mobile-menu-link">
+                        <svg class="mobile-menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Lista de Desejos</span>
+                    </a>
+                    <a href="#" class="mobile-menu-link">
+                        <svg class="mobile-menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1" y="4" width="22" height="16" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1 10h22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Minhas Compras</span>
+                    </a>
+                </div>
+                <div class="mobile-menu-categories">
+                    <h3 class="mobile-menu-section-title">Categorias</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="index.html">Ofertas</a></li>
+                        <li><a href="index.html">Celulares e Smartphones <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Eletro <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Eletrônicos <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Utilidades Domésticas <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Cama, Mesa e Banho <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Moda <span class="menu-arrow">›</span></a></li>
+                        <li><a href="index.html">Beleza e Perfumaria <span class="menu-arrow">›</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="quiz-page">
+        <div class="quiz-hero">
+            <h1 class="quiz-hero-title">Pesquisa de Satisfação</h1>
+        </div>
+
+        <div class="quiz-container">
+            <!-- Intro -->
+            <div class="quiz-screen quiz-screen-intro active" data-screen="intro">
+                <div class="quiz-intro">
+                    <p class="quiz-intro-subtitle">Ajude-nos a melhorar sua experiência de compra.</p>
+                    <p class="quiz-intro-text">Responda a 5 perguntas rápidas. Ao finalizar, seu benefício promocional será liberado.</p>
+                    <ul class="quiz-intro-features">
+                        <li><span class="quiz-intro-feature-icon">✓</span> 5 perguntas rápidas</li>
+                        <li><span class="quiz-intro-feature-icon">✓</span> Tempo médio: 1 minuto</li>
+                        <li><span class="quiz-intro-feature-icon">✓</span> Participação válida nesta campanha</li>
+                    </ul>
+                    <button type="button" class="quiz-btn quiz-start-btn">Iniciar Pesquisa</button>
+                </div>
+            </div>
+
+            <!-- Questions -->
+            <div class="quiz-screen" data-screen="question">
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="quiz-step-label">Pergunta <span class="quiz-step-current">1</span> de <span class="quiz-step-total">5</span></div>
+                <h2 class="quiz-question"></h2>
+                <div class="quiz-options"></div>
+            </div>
+
+            <!-- Result -->
+            <div class="quiz-screen" data-screen="result">
+                <div class="quiz-result">
+                    <div class="quiz-gift-icon">🎉</div>
+                    <h2>Parabéns!</h2>
+                    <p class="quiz-result-text">Sua participação foi concluída com sucesso.<br>Seu acesso à campanha promocional foi liberado.<br>Clique no botão abaixo para visualizar os produtos participantes com até 90% de desconto.</p>
+                    <div class="quiz-result-actions">
+                        <a href="index.html" class="quiz-btn quiz-cta-btn">Ver Produtos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-location">
+            <div class="container">
+                <svg class="location-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C5.23858 0 3 2.23858 3 5C3 8.5 8 16 8 16C8 16 13 8.5 13 5C13 2.23858 10.7614 0 8 0ZM8 6.5C7.17157 6.5 6.5 5.82843 6.5 5C6.5 4.17157 7.17157 3.5 8 3.5C8.82843 3.5 9.5 4.17157 9.5 5C9.5 5.82843 8.82843 6.5 8 6.5Z" fill="currentColor"/>
+                </svg>
+                <span class="location-text">Enviar para</span>
+                <span class="location-placeholder">Digite o CEP</span>
+                <span class="location-loading">Carregando</span>
+            </div>
+        </div>
+        <div class="container footer-content">
+            <div class="footer-bottom">
+                <ul class="footer-policies">
+                    <li><a href="#">Guia de segurança</a></li>
+                    <li><a href="#">Política de privacidade</a></li>
+                    <li><a href="#">Política do site</a></li>
+                    <li><a href="#">Solicitações sobre dados pessoais</a></li>
+                    <li><a href="#">Política de entrega</a></li>
+                    <li><a href="#">Troca e devolução</a></li>
+                </ul>
+                <p class="footer-copyright">
+                    © 1986 - 2025 HAVAN S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil, 250 - Centro II, Brusque - SC, 88353-100
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="quiz.js"></script>
+</body>
+</html>

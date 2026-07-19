@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Havan | Tudo num só Lugar</title>
+    <script>
+        (function () {
+            var hasCoupon = false;
+            try {
+                var coupon = JSON.parse(localStorage.getItem('havan_coupon'));
+                hasCoupon = !!(coupon && coupon.code);
+            } catch (e) {
+                hasCoupon = false;
+            }
+            if (!hasCoupon) {
+                window.location.replace('quiz.html');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-top">
+            <div class="container">
+                <button class="menu-toggle" aria-label="Menu">
+                    <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                
+                <a href="/" class="logo">
+                    <img src="https://www.havan.com.br/static/version1764669753/frontend/Havan/themeDefault/pt_BR/images/svg/logo-havan-slim-w.svg" alt="Havan | Tudo num só Lugar">
+                </a>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar na Havan" id="searchInput">
+                    <button class="search-button" aria-label="Buscar">
+                        <svg class="icon-search" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="user-nav">
+                    <button class="search-icon-mobile" aria-label="Buscar">
+                        <svg class="icon-search" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="account-button" aria-label="Minha Conta">
+                        <svg class="icon-user" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 10C12.7614 10 15 7.76142 15 5C15 2.23858 12.7614 0 10 0C7.23858 0 5 2.23858 5 5C5 7.76142 7.23858 10 10 10Z" fill="currentColor"/>
+                            <path d="M10 12C5.58172 12 2 14.6863 2 18V20H18V18C18 14.6863 14.4183 12 10 12Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <div class="account-text">
+                        <span>Olá, entre na conta ou</span>
+                        <span>cadastre-se</span>
+                    </div>
+                    <a href="#" class="cart-button" aria-label="Carrinho">
+                        <svg class="icon-cart" width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 2H4L4.4 5M6 13H16L19 6H4.4M6 13L4.4 5M6 13C4.89543 13 4 13.8954 4 15C4 16.1046 4.89543 17 6 17C7.10457 17 8 16.1046 8 15M16 13C14.8954 13 14 13.8954 14 15C14 16.1046 14.8954 17 16 17C17.1046 17 18 16.1046 18 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="header-location">
+            <div class="container">
+                <svg class="location-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C5.23858 0 3 2.23858 3 5C3 8.5 8 16 8 16C8 16 13 8.5 13 5C13 2.23858 10.7614 0 8 0ZM8 6.5C7.17157 6.5 6.5 5.82843 6.5 5C6.5 4.17157 7.17157 3.5 8 3.5C8.82843 3.5 9.5 4.17157 9.5 5C9.5 5.82843 8.82843 6.5 8 6.5Z" fill="currentColor"/>
+                </svg>
+                <span class="location-text">Enviar para</span>
+                <span class="location-placeholder">Digite o CEP</span>
+                <span class="location-loading">Carregando</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner -->
+    <div class="banner-container">
+        <img src="banner-havan.png" alt="Banner Havan" class="banner-image">
+    </div>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <img src="https://www.havan.com.br/static/version1764669753/frontend/Havan/themeDefault/pt_BR/images/svg/logo-havan-slim-sidebar.svg" alt="HAVAN" class="mobile-menu-logo">
+                <button class="mobile-menu-close" aria-label="Fechar menu" id="closeMobileMenu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-user">
+                    <a href="#" class="mobile-menu-link">
+                        <svg class="mobile-menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Lista de Desejos</span>
+                    </a>
+                    <a href="#" class="mobile-menu-link">
+                        <svg class="mobile-menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1" y="4" width="22" height="16" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1 10h22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Minhas Compras</span>
+                    </a>
+                </div>
+                <div class="mobile-menu-categories">
+                    <h3 class="mobile-menu-section-title">Categorias</h3>
+                    <ul class="mobile-menu-list">
+                        <li><a href="#">Ofertas</a></li>
+                        <li><a href="#">Celulares e Smartphones <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Eletro <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Eletrônicos <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Utilidades Domésticas <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Cama, Mesa e Banho <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Moda <span class="menu-arrow">›</span></a></li>
+                        <li><a href="#">Beleza e Perfumaria <span class="menu-arrow">›</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Ofertas Imperdíveis -->
+        <section class="products-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><strong>Ofertas Imperdíveis pra Você!</strong></h2>
+                </div>
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/n/o/notebook-lenovo-celeron-n4500-4gb-128gb-ssd-15-6-w11_1196057.webp" alt="Notebook Lenovo Celeron N4500 4Gb 128Gb Ssd 15,6&quot; Windows 11">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product.html">Notebook Lenovo Celeron N4500 4Gb 128Gb Ssd 15,6" Windows 11</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="#" class="rating-count">(78)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-old">R$ 999,90</span>
+                                <span class="price-current">R$ 56,90</span>
+                                <span class="price-installment">10x de R$ 5,69</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product2.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/p/c/pc-gamer-brx-ryzen-5-5700-32gb-ssd-480gb-rx-6600-windows-11_1117791.jpg" alt="Pc Gamer Brx Ryzen 7 5700 32Gb Ssd 480Gb Rx 6600 Windows 11">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product2.html">Pc Gamer Brx Ryzen 7 5700 32Gb Ssd 480Gb Rx 6600 Windows 11</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="#" class="rating-count">(63)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-old">R$ 1.799,90</span>
+                                <span class="price-current">R$ 70,90</span>
+                                <span class="price-installment">10x de R$ 7,09</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product3.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/m/smartphone-motorola-edge-60-fusion-5g-256gb-8gb_1227039.jpg" alt="Celular Smartphone Motorola Edge 60 Fusion 5G 256Gb 8Gb - Creme">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product3.html">Celular Smartphone Motorola Edge 60 Fusion 5G 256Gb 8Gb - Creme</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="#" class="rating-count">(66)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-old">R$ 3.499,90</span>
+                                <span class="price-current">R$ 189,90</span>
+                                <span class="price-installment">10x de R$ 18,99</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product4.html" class="product-image">
+                            <img src="img/iphone17-pro-max-laranja-1.png" alt="iPhone 17 Pro Max 256Gb - Laranja">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product4.html">iPhone 17 Pro Max 256Gb - Laranja</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="#" class="rating-count">(69)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-old">R$ 8.999,90</span>
+                                <span class="price-current">R$ 149,90</span>
+                                <span class="price-installment">12x de R$ 12,49</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product5.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/e/celular-samsung-galaxy-s25-fe-5g-128gb-8gb-camera-tripla_1226285.jpg" alt="Celular Samsung Galaxy S25 Fe 5G 128Gb 8Gb Câmera Tripla - Preto">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product5.html">Celular Samsung Galaxy S25 Fe 5G 128Gb 8Gb Câmera Tripla - Preto</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="#" class="rating-count">(83)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-old">R$ 2.999,90</span>
+                                <span class="price-current">R$ 175,90</span>
+                                <span class="price-installment">10x de R$ 17,59</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product6.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/a/samsung-galaxy-a56-5g-128-gb-8-gb-camera-tripla_1076857.jpg" alt="Samsung Galaxy A56">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product6.html">Samsung Galaxy A56 5G 128Gb 8Gb Câmera Tripla - Cinza</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product6.html#reviews" class="rating-count">(64)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 140,90</span>
+                                <span class="price-old">R$ 2.999,90</span>
+                                <span class="price-installment">12x de R$ 11,74</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 7 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product7.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/o/console-playstation-5-sony-1tb-disk-bundle-astro-bot-e-gran-turismo-7_1215790.jpg" alt="Console Playstation 5 Sony 1Tb Slim Disk">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product7.html">Console Playstation 5 Sony 1Tb Slim Disk com Jogos Astro Bot e Gran Turismo 7 - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product7.html#reviews" class="rating-count">(47)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 314,90</span>
+                                <span class="price-old">R$ 4.999,90</span>
+                                <span class="price-installment">12x de R$ 26,24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 8 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product8.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/a/samsung-galaxy-a56-5g-128-gb-8-gb-camera-tripla_1076904.jpg" alt="Samsung Galaxy A56 5G Preto">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product8.html">Samsung Galaxy A56 5G 128Gb 8Gb Câmera Tripla - Preto</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product8.html#reviews" class="rating-count">(70)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 140,90</span>
+                                <span class="price-old">R$ 2.999,90</span>
+                                <span class="price-installment">12x de R$ 11,74</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 9 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product9.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/m/i/micro-ondas-consul-32-litros-cinza-com-menu-facil-cms46ar_910265.jpg" alt="Micro-ondas Consul 32 Litros Cinza">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product9.html">Micro-ondas Consul 32 Litros Cinza com Menu Fácil CMS46AR</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product9.html#reviews" class="rating-count">(61)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 70,90</span>
+                                <span class="price-old">R$ 999,90</span>
+                                <span class="price-installment">10x de R$ 7,09</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 10 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product10.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/51f3b2f4e9a308ca72395b5c2ab9c691/f/r/fritadeira-air-fryer-eletrica-wap-10-litros-12-em-1-barbecue_1288733_1.jpg" alt="Fritadeira Air Fryer Wap 10 Litros">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product10.html">Fritadeira Air Fryer Elétrica Wap 10 Litros 12 em 1 Barbecue</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product10.html#reviews" class="rating-count">(81)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 46,90</span>
+                                <span class="price-old">R$ 699,90</span>
+                                <span class="price-installment">10x de R$ 4,69</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 11 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product11.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/e/celular-samsung-galaxy-s25-fe-5g-128gb-8gb-camera-tripla_1226269.webp" alt="Samsung Galaxy S25 FE Azul Marinho">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product11.html">Celular Samsung Galaxy S25 Fe 5G 128Gb 8Gb Câmera Tripla - Azul Marinho</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product11.html#reviews" class="rating-count">(53)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 224,90</span>
+                                <span class="price-old">R$ 3.999,90</span>
+                                <span class="price-installment">12x de R$ 18,74</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 12 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product12.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/e/celular-samsung-galaxy-s25-fe-5g-128gb-8gb-camera-tripla_1226281.jpg" alt="Samsung Galaxy S25 FE Azul">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product12.html">Celular Samsung Galaxy S25 Fe 5G 128Gb 8Gb Câmera Tripla - Azul</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product12.html#reviews" class="rating-count">(76)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 224,90</span>
+                                <span class="price-old">R$ 3.999,90</span>
+                                <span class="price-installment">12x de R$ 18,74</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 13 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product13.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/l/a/lava-e-seca-lg-14kg-smart-branca-com-inteligencia-artificial-vc4_937658_1.jpg" alt="Lava e Seca LG 14kg Smart Branca">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product13.html">Lava e Seca LG 14kg Smart Branca com Inteligência Artificial VC4</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product13.html#reviews" class="rating-count">(81)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 363,90</span>
+                                <span class="price-old">R$ 6.999,90</span>
+                                <span class="price-installment">12x de R$ 30,32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 14 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product14.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/n/o/notebook-acer-amd-r7-aspire-5-16gb-ram-512-gb-ssd-tela-15-6-linux_1140391.jpg" alt="Notebook Acer Aspire 5">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product14.html">Notebook Acer Amd R7 Aspire 5 16Gb Ram 512 Gb Ssd Tela 15.6" Linux - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product14.html#reviews" class="rating-count">(76)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 259,90</span>
+                                <span class="price-old">R$ 4.499,90</span>
+                                <span class="price-installment">12x de R$ 21,66</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 15 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product15.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/m/smart-tv-58-4k-philco-google-tv-hdr10-dolby-audio_1109063.webp" alt="Smart TV 58 Philco 4K">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product15.html">Smart Tv 58" 4K Philco Google Tv Hdr10 Dolby Audio - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product15.html#reviews" class="rating-count">(54)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 210,90</span>
+                                <span class="price-old">R$ 3.999,90</span>
+                                <span class="price-installment">12x de R$ 17,57</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 16 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product16.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/m/smart-tv-75_-4k-uhd-tcl-75p7k-google-tv_1126954.jpg" alt="Smart TV 75 TCL QLED 4K">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product16.html">Smart Tv 75" Tcl Qled 4Kp7k Google Tv - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product16.html#reviews" class="rating-count">(49)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 363,90</span>
+                                <span class="price-old">R$ 6.999,90</span>
+                                <span class="price-installment">12x de R$ 30,32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 17 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product17.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/t/e/telefone-celular-motorola-xt2523-2-g05-128gb_1096204.jpg" alt="Celular Smartphone Motorola Xt2523-2 G05 128Gb - CINZA">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product17.html">Celular Smartphone Motorola Xt2523-2 G05 128Gb - CINZA</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product17.html#reviews" class="rating-count">(48)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 77,90</span>
+                                <span class="price-old">R$ 1.199,90</span>
+                                <span class="price-installment">10x de R$ 7,79</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 18 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product18.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/a/caixa-de-som-bluetooth-jbl-xtreme-4_981859.jpg" alt="Caixa De Som Bluetooth Jbl Xtreme 4 - Preto">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product18.html">Caixa De Som Bluetooth Jbl Xtreme 4 - Preto</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product18.html#reviews" class="rating-count">(58)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 119,90</span>
+                                <span class="price-old">R$ 1.999,90</span>
+                                <span class="price-installment">12x de R$ 9,99</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 19 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product19.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/s/m/smart-tv-lg-ai-75--4k-uhd-a7-ai-processor-4k-gen8-webos-25---75ua8550_1249773.jpg" alt="Smart Tv Lg Ai 75" 4K Uhd A7 Ai Processor 4K Gen8 Webos 25 75Ua8550">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product19.html">Smart Tv Lg Ai 75" 4K Uhd A7 Ai Processor 4K Gen8 Webos 25 75Ua8550</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product19.html#reviews" class="rating-count">(65)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 398,90</span>
+                                <span class="price-old">R$ 7.499,90</span>
+                                <span class="price-installment">12x de R$ 33,24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 20 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product20.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/j/o/jogo-de-panelas-aluminio-inducao-tunis-tramontina-5-pecas_1210204.jpg" alt="Jogo de Panelas Indução Tunis Tramontina 5 Peças - Marrom">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product20.html">Jogo de Panelas Indução Tunis Tramontina 5 Peças - Marrom</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product20.html#reviews" class="rating-count">(56)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 56,90</span>
+                                <span class="price-old">R$ 799,90</span>
+                                <span class="price-installment">10x de R$ 5,69</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 21 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product21.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/j/o/jogo-de-panelas-aluminio-inducao-tunis-tramontina-5-pecas_1210231.jpg" alt="Jogo de Panelas Indução Tunis Tramontina 5 Peças - Rosa Trufado">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product21.html">Jogo de Panelas Indução Tunis Tramontina 5 Peças - Rosa Trufado</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product21.html#reviews" class="rating-count">(80)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 56,90</span>
+                                <span class="price-old">R$ 799,90</span>
+                                <span class="price-installment">10x de R$ 5,69</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 22 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product22.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/s/m/smart-tv-50-philco-ptv50va4regb-roku-tv-led-dolby-audio_1127491.jpg" alt="Smart Tv 50" Philco Ptv50va4regb Roku Tv Led Dolby Audio - Bivolt">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product22.html">Smart Tv 50" Philco Ptv50va4regb Roku Tv Led Dolby Audio - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product22.html#reviews" class="rating-count">(83)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 189,90</span>
+                                <span class="price-old">R$ 3.499,90</span>
+                                <span class="price-installment">12x de R$ 15,83</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 23 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product23.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/c/o/console-playstation-5-sony-1tb-disk-bundle-astro-bot-e-gran-turismo-7_1215790.jpg" alt="Console Playstation 5 Sony 1Tb Slim Disk com Jogos Astro Bot e Gran Turismo 7 - Bivolt">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product23.html">Console Playstation 5 Sony 1Tb Slim Disk com Jogos Astro Bot e Gran Turismo 7 - Bivolt</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product23.html#reviews" class="rating-count">(49)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 314,90</span>
+                                <span class="price-old">R$ 5.499,90</span>
+                                <span class="price-installment">12x de R$ 26,24</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 24 -->
+                    <div class="product-card">
+                        <button class="wishlist-btn">♡</button>
+                        <a href="product24.html" class="product-image">
+                            <img src="https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/l/i/liquidificador-powermax-arno-1400w-3-1-litros-ln65_1212601_1.jpg" alt="Liquidificador PowerMax Arno 1400W 3,1 Litros LN65">
+                        </a>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <a href="product24.html">Liquidificador PowerMax Arno 1400W 3,1 Litros LN65</a>
+                            </h3>
+                            <div class="product-rating">
+                                <div class="stars stars-partial" style="--rating: 4.8;">★★★★★</div>
+                                <a href="product24.html#reviews" class="rating-count">(53)</a>
+                            </div>
+                            <div class="product-price">
+                                <span class="price-special-label">Preço especial</span>
+                                <span class="price-current">R$ 39,90</span>
+                                <span class="price-old">R$ 499,90</span>
+                                <span class="price-installment">10x de R$ 3,99</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-location">
+            <div class="container">
+                <svg class="location-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0C5.23858 0 3 2.23858 3 5C3 8.5 8 16 8 16C8 16 13 8.5 13 5C13 2.23858 10.7614 0 8 0ZM8 6.5C7.17157 6.5 6.5 5.82843 6.5 5C6.5 4.17157 7.17157 3.5 8 3.5C8.82843 3.5 9.5 4.17157 9.5 5C9.5 5.82843 8.82843 6.5 8 6.5Z" fill="currentColor"/>
+                </svg>
+                <span class="location-text">Enviar para</span>
+                <span class="location-placeholder">Digite o CEP</span>
+                <span class="location-loading">Carregando</span>
+            </div>
+        </div>
+        <div class="container footer-content">
+            <div class="footer-top">
+                <div class="footer-contact-links-wrapper">
+                    <div class="footer-contact">
+                        <h2>Não encontrou o que precisava? Fale com a gente!</h2>
+                        <div class="contact-us-items">
+                            <a class="link" href="https://portalcliente.havan.com.br/atendimento/?utm_source=ecommerce&amp;utm_medium=referral" target="_blank">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 1C8.13 1 5 4.13 5 8C5 10.38 6.19 12.47 8 13.74V17C8 17.55 8.45 18 9 18H15C15.55 18 16 17.55 16 17V13.74C17.81 12.47 19 10.38 19 8C19 4.13 15.87 1 12 1ZM14 19H10V21H14V19Z" fill="currentColor"/>
+                                </svg>
+                                <span>Atendimento<br> compras online</span>
+                            </a>
+                            <a class="link" href="https://portalcliente.havan.com.br/nossas-lojas/?utm_source=ecommerce&amp;utm_medium=referral" target="_blank">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" fill="currentColor"/>
+                                </svg>
+                                <span>Fale com<br> uma loja</span>
+                            </a>
+                            <a class="link" href="https://negociacao.havan.com.br/?utm_source=ecommerce&amp;utm_medium=referral" target="_blank">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.8 10.9C9.53 10.31 8.8 9.7 8.8 8.75C8.8 7.66 9.81 6.9 11.5 6.9C13.28 6.9 13.94 7.75 14 9H16.21C16.14 7.28 15.09 5.7 13 5.19V3H10V5.16C8.06 5.58 6.5 6.84 6.5 8.77C6.5 11.08 8.41 12.23 11.2 12.9C13.7 13.5 14.2 14.38 14.2 15.31C14.2 16 13.71 17.1 11.5 17.1C9.28 17.1 8.63 16.18 8.5 15H6.32C6.44 17.19 8.08 18.42 10 18.83V21H13V18.85C14.95 18.5 16.5 17.35 16.5 15.3C16.5 12.46 14.07 11.5 11.8 10.9Z" fill="currentColor"/>
+                                </svg>
+                                <span>Negociar<br> dívida Havan</span>
+                            </a>
+                            <a class="link" href="https://blog.havan.com.br/?utm_source=ecommerce&amp;utm_medium=referral" target="_blank">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM17 12H7V10H17V12ZM15 16H7V14H15V16ZM17 8H7V6H17V8Z" fill="currentColor"/>
+                                </svg>
+                                <span>Blog Havan</span>
+                            </a>
+                            <a class="link" href="https://www.havan.com.br/acessibilidade" data-show-vlibras="">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H11V21H5V3H13V9H21ZM14 10V12H22V10H14ZM14 14V16H22V14H14ZM14 18V20H19V18H14Z" fill="currentColor"/>
+                                </svg>
+                                <span>Acessibilidade</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-links">
+                        <h3>A Havan</h3>
+                        <ul>
+                            <li><a href="#">Nossa história</a></li>
+                            <li><a href="#">Lista de presentes</a></li>
+                            <li><a href="#">Trabalhe conosco</a></li>
+                            <li><a href="#">Painel do colaborador</a></li>
+                            <li><a href="#">Seguros</a></li>
+                            <li><a href="#">Cartão Havan</a></li>
+                            <li><a href="#">Igualdade Salarial</a></li>
+                            <li><a href="#">Troco solidário</a></li>
+                            <li><a href="#">Projetos e patrocínios</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-app-social">
+                    <div class="footer-app">
+                        <h3>Aplicativo Havan</h3>
+                        <p>Conheça as vantagens</p>
+                        <div class="app-link-wrapper">
+                            <a href="#" class="app-link">
+                                <span>DISPONÍVEL NAS LOJAS</span>
+                                <div class="app-icons">
+                                    <svg class="app-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                                    </svg>
+                                    <svg class="app-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                                    </svg>
+                                </div>
+                            </a>
+                            <a href="#" class="app-badge">
+                                <img src="https://www.havan.com.br/static/version1764669753/frontend/Havan/themeDefault/pt_BR/Magento_Theme/images/app-qr-code.svg" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="footer-social">
+                        <div class="social-links">
+                            <a href="#" aria-label="YouTube">
+                                <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Instagram">
+                                <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="X (Twitter)">
+                                <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Facebook">
+                                <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="TikTok">
+                                <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <ul class="footer-policies">
+                    <li><a href="#">Guia de segurança</a></li>
+                    <li><a href="#">Política de privacidade</a></li>
+                    <li><a href="#">Política do site</a></li>
+                    <li><a href="#">Solicitações sobre dados pessoais</a></li>
+                    <li><a href="#">Política de entrega</a></li>
+                    <li><a href="#">Troca e devolução</a></li>
+                </ul>
+                <p class="footer-copyright">
+                    © 1986 - 2025 HAVAN S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil, 250 - Centro II, Brusque - SC, 88353-100
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
