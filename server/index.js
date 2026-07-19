@@ -10,6 +10,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/api/health', (_req, res) => {
+    res.json({
+        ok: true,
+        pixConfigured: Boolean(process.env.BLACKCAT_SECRET_KEY || process.env.BLACKCAT_API_KEY)
+    });
+});
+
 app.use('/api/pix', pixRoutes);
 app.use(express.static(path.join(__dirname, '..')));
 

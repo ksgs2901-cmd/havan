@@ -5,7 +5,24 @@ const productPrice = parseFloat(params.get('price')) || 0;
 const productImage = params.get('image') || 'banner-havan.png';
 const productQty = parseInt(params.get('qty'), 10) || 1;
 
-const API_BASE = window.location.protocol === 'file:' ? '' : window.location.origin;
+function resolveApiBase() {
+    const { protocol, hostname, port, origin } = window.location;
+
+    if (protocol === 'file:') {
+        return 'http://localhost:3000';
+    }
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        if (!port || port === '3000') {
+            return origin;
+        }
+        return `${protocol}//${hostname}:3000`;
+    }
+
+    return origin;
+}
+
+const API_BASE = resolveApiBase();
 
 function formatBRL(value) {
     return 'R$ ' + value.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d)\,)/g, '.');
@@ -125,7 +142,7 @@ function getShippingData() {
 
 function validateCheckoutData() {
     if (window.location.protocol === 'file:') {
-        return 'Abra o site pelo servidor Node (npm start na pasta server) para finalizar a compra.';
+        return 'Abra o site em http://localhost:3000 (execute "npm start" na raiz do projeto).';
     }
 
     if (!subtotal || subtotal <= 0) {
@@ -239,7 +256,10 @@ async function parseJsonResponse(response) {
     try {
         return text ? JSON.parse(text) : {};
     } catch {
-        throw new Error('Servidor indisponível. Execute "npm start" na pasta server e acesse http://localhost:3000');
+        if (window.location.protocol === 'file:') {
+            throw new Error('Abra o site em http://localhost:3000 (execute "npm start" na raiz do projeto).');
+        }
+        throw new Error('Servidor indisponível. Na raiz do projeto execute "npm start" e acesse http://localhost:3000');
     }
 }
 
@@ -393,3 +413,16 @@ if (copyBtn) {
         }
     });
 }
+
+async function checkServerOnLoad() {
+    if (!checkoutFormError) return;
+
+    try {
+        const response = await fetch(API_BASE + '/api/health', { method: 'GET' });
+        if (!response.ok) throw new Error('offline');
+    } catch {
+        showFormError('Servidor offline. Execute "npm start" na raiz do projeto e acesse http://localhost:3000');
+    }
+}
+
+checkServerOnLoad();
