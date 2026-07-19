@@ -1,0 +1,10 @@
+{
+  "name": "havan-clone",
+  "private": true,
+  "scripts": {
+    "start": "cd server && npm install && node index.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

@@ -26,15 +26,12 @@ const nextButton = document.querySelector('.carousel-next');
 const totalSlides = slides.length;
 
 function showSlide(index) {
-    // Move carousel
     const carousel = document.querySelector('.carousel-slides');
-    if (!carousel) return;
+    if (!carousel || totalSlides === 0) return;
 
-    // Remove active class from all slides and dots
     slides.forEach(slide => slide.classList.remove('active'));
     dots.forEach(dot => dot.classList.remove('active'));
 
-    // Add active class to current slide and dot
     if (slides[index]) {
         slides[index].classList.add('active');
     }
@@ -46,11 +43,13 @@ function showSlide(index) {
 }
 
 function nextSlide() {
+    if (totalSlides === 0) return;
     currentSlide = (currentSlide + 1) % totalSlides;
     showSlide(currentSlide);
 }
 
 function prevSlide() {
+    if (totalSlides === 0) return;
     currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
     showSlide(currentSlide);
 }
@@ -181,15 +180,37 @@ if (buyNowBtn) {
         const name = titleEl ? titleEl.textContent.trim() : 'Produto Havan';
         const priceText = priceEl ? priceEl.textContent.replace('R$', '').trim() : '0';
         const price = parseFloat(priceText.replace(/\./g, '').replace(',', '.')) || 0;
-        const image = imgEl ? imgEl.src : '';
+
+        let image = '';
+        if (imgEl) {
+            const src = imgEl.getAttribute('src') || '';
+            if (src.startsWith('http')) {
+                try {
+                    const parsed = new URL(src);
+                    image = parsed.pathname.replace(/^\//, '');
+                } catch {
+                    image = src;
+                }
+            } else {
+                image = src;
+            }
+        }
+
         const qty = qtyEl ? qtyEl.value : '1';
 
-        const params = new URLSearchParams({ name, price, image, qty });
+        const params = new URLSearchParams({
+            name,
+            price: String(price),
+            image,
+            qty
+        });
         window.location.href = 'checkout.html?' + params.toString();
     });
 }
 
-// Initialize
+// Initialize carousel only on pages that have one
 document.addEventListener('DOMContentLoaded', () => {
-    showSlide(0);
+    if (totalSlides > 0) {
+        showSlide(0);
+    }
 });

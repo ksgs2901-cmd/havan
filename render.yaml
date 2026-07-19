@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: havan-loja
+    runtime: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BLACKCAT_SECRET_KEY
+        sync: false
+      - key: BLACKCAT_PUBLIC_KEY
+        sync: false

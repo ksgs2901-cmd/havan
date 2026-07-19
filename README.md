@@ -28,24 +28,53 @@ Este projeto é uma réplica fiel do site da Havan, incluindo:
 
 ## 🚀 Como usar
 
-1. Abra o arquivo `index.html` em um navegador web
-2. Ou use um servidor local:
-   ```bash
-   # Com Python
-   python -m http.server 8000
-   
-   # Com Node.js (http-server)
-   npx http-server
-   ```
+### Opção 1 — Um clique (recomendado)
+
+**Windows:** clique duas vezes em `iniciar-site.bat`  
+**Mac/Linux:** execute `./iniciar-site.sh`
+
+O navegador abre automaticamente em `http://localhost:3000`. Mantenha a janela aberta enquanto usa a loja.
+
+### Opção 2 — Hospedagem com PHP (Hostinger, Locaweb, etc.)
+
+1. Envie todos os arquivos para a hospedagem
+2. Copie `.env.example` para `.env` e configure `BLACKCAT_SECRET_KEY`
+3. O checkout Pix funciona via `api/pix/*.php` automaticamente
+
+### Opção 3 — Terminal
+
+```bash
+npm start
+```
+
+Acesse `http://localhost:3000`
+
+**Importante:** não abra o `index.html` direto no navegador — o Pix precisa do servidor.
+
+### Deploy online (permanente)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ksgs2901-cmd/havan)
+
+1. Clique no botão acima
+2. Crie conta gratuita no Render (se não tiver)
+3. Adicione a variável `BLACKCAT_SECRET_KEY` com sua chave secreta
+4. Clique em **Deploy** — em ~2 min o site fica no ar com URL `*.onrender.com`
 
 ## 📁 Estrutura de Arquivos
 
 ```
 havan-clone/
-├── index.html      # Estrutura HTML principal
-├── styles.css      # Estilos CSS completos
-├── script.js       # JavaScript para interatividade
-└── README.md       # Este arquivo
+├── index.html          # Página principal
+├── checkout.html       # Checkout com Pix
+├── checkout.js         # Lógica do checkout e integração Pix
+├── styles.css          # Estilos CSS completos
+├── script.js           # JavaScript para interatividade
+├── server/             # Backend Node.js (API Pix BlackCat)
+│   ├── index.js
+│   ├── routes/pix.js
+│   └── package.json
+├── .env.example        # Exemplo de variáveis de ambiente
+└── README.md           # Este arquivo
 ```
 
 ## 🔧 Tecnologias Utilizadas
@@ -53,6 +82,8 @@ havan-clone/
 - HTML5
 - CSS3
 - JavaScript (Vanilla)
+- Node.js + Express (API Pix)
+- BlackCat API (pagamentos Pix)
 - Google Fonts (Nunito)
 
 ## 📱 Responsividade
