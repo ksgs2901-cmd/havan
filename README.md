@@ -40,15 +40,15 @@ Este projeto é uma réplica fiel do site da Havan, incluindo:
    npx http-server
    ```
 
-### Checkout com Pix real (Mercado Pago)
+### Checkout com Pix real (BlackCat)
 
 O pagamento Pix exige um backend para proteger as credenciais da API.
 
-1. Crie uma aplicação no [Painel de Desenvolvedores do Mercado Pago](https://www.mercadopago.com.br/developers/panel/app) e copie o **Access Token**.
+1. Obtenha suas chaves no painel da [BlackCat](https://docs.blackcatoficial.com).
 2. Configure as variáveis de ambiente:
    ```bash
    cp .env.example .env
-   # Edite .env e cole seu MERCADOPAGO_ACCESS_TOKEN
+   # Edite .env e cole sua BLACKCAT_SECRET_KEY (sk_live_...)
    ```
 3. Instale as dependências e inicie o servidor:
    ```bash
@@ -60,10 +60,8 @@ O pagamento Pix exige um backend para proteger as credenciais da API.
 
 O servidor serve os arquivos estáticos e expõe:
 
-- `POST /api/pix/create` — gera cobrança Pix (QR Code + copia e cola)
+- `POST /api/pix/create` — cria cobrança Pix na BlackCat (QR Code + copia e cola)
 - `GET /api/pix/status/:paymentId` — consulta status do pagamento
-
-**Importante:** cadastre uma chave Pix na conta Mercado Pago vendedora. Em ambiente de teste, use [usuários de teste](https://www.mercadopago.com.br/developers/pt/docs/checkout-api/integration-test/test-accounts).
 
 ## 📁 Estrutura de Arquivos
 
@@ -74,7 +72,7 @@ havan-clone/
 ├── checkout.js         # Lógica do checkout e integração Pix
 ├── styles.css          # Estilos CSS completos
 ├── script.js           # JavaScript para interatividade
-├── server/             # Backend Node.js (API Pix Mercado Pago)
+├── server/             # Backend Node.js (API Pix BlackCat)
 │   ├── index.js
 │   ├── routes/pix.js
 │   └── package.json
@@ -88,7 +86,7 @@ havan-clone/
 - CSS3
 - JavaScript (Vanilla)
 - Node.js + Express (API Pix)
-- Mercado Pago SDK (pagamentos Pix)
+- BlackCat API (pagamentos Pix)
 - Google Fonts (Nunito)
 
 ## 📱 Responsividade

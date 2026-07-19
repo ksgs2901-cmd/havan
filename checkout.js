@@ -171,9 +171,21 @@ async function createPixPayment() {
         body: JSON.stringify({
             amount: subtotal,
             description: productName + ' (x' + productQty + ')',
+            productName,
+            productQty,
             email: shipping.email,
             cpf: shipping.cpf,
-            name: shipping.name
+            name: shipping.name,
+            phone: shipping.phone,
+            shipping: {
+                cep: shipping.cep,
+                numero: shipping.numero,
+                endereco: shipping.endereco,
+                bairro: shipping.bairro,
+                cidade: shipping.cidade,
+                estado: shipping.estado,
+                complemento: document.getElementById('fComplemento')?.value || ''
+            }
         })
     });
 
@@ -230,9 +242,9 @@ function startPixPolling(paymentId) {
 
             if (data.status === 'approved') {
                 confirmPixPayment(data.paymentId);
-            } else if (data.status === 'cancelled' || data.status === 'rejected') {
+            } else if (data.status === 'cancelled') {
                 stopPixPolling();
-                showPixError('Pagamento cancelado ou recusado. Gere um novo Pix para tentar novamente.');
+                showPixError('Pagamento cancelado ou expirado. Gere um novo Pix para tentar novamente.');
             }
         } catch (err) {
             console.error('Erro ao consultar status do Pix:', err);

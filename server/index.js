@@ -14,9 +14,9 @@ app.use('/api/pix', pixRoutes);
 app.use(express.static(path.join(__dirname, '..')));
 
 app.listen(PORT, () => {
-    const hasToken = Boolean(process.env.MERCADOPAGO_ACCESS_TOKEN);
+    const hasKey = Boolean(process.env.BLACKCAT_SECRET_KEY || process.env.BLACKCAT_API_KEY);
     console.log(`Servidor rodando em http://localhost:${PORT}`);
-    console.log(hasToken
-        ? 'PIX API: Mercado Pago configurado'
-        : 'PIX API: defina MERCADOPAGO_ACCESS_TOKEN no arquivo .env');
+    console.log(hasKey
+        ? 'PIX API: BlackCat configurada'
+        : 'PIX API: defina BLACKCAT_SECRET_KEY no arquivo .env');
 });
