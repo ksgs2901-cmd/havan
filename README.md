@@ -51,14 +51,27 @@ Acesse `http://localhost:3000`
 
 **Importante:** não abra o `index.html` direto no navegador — o Pix precisa do servidor.
 
-### Deploy online (permanente)
+### Deploy na Vercel (recomendado)
+
+Repositório: **https://github.com/ksgs2901-cmd/havan**
+
+1. Acesse [vercel.com](https://vercel.com) e faça login com GitHub
+2. Clique em **Add New → Project**
+3. Importe o repositório `ksgs2901-cmd/havan`
+4. Em **Environment Variables**, adicione:
+   - `BLACKCAT_SECRET_KEY` = sua chave `sk_live_...`
+   - `BLACKCAT_PUBLIC_KEY` = sua chave `pk_live_...` (opcional)
+5. Clique em **Deploy**
+
+Pronto — o site fica no ar em `https://seu-projeto.vercel.app` com checkout Pix funcionando.
+
+### Deploy no Render (alternativa)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ksgs2901-cmd/havan)
 
 1. Clique no botão acima
-2. Crie conta gratuita no Render (se não tiver)
-3. Adicione a variável `BLACKCAT_SECRET_KEY` com sua chave secreta
-4. Clique em **Deploy** — em ~2 min o site fica no ar com URL `*.onrender.com`
+2. Adicione `BLACKCAT_SECRET_KEY` nas variáveis de ambiente
+3. Deploy — URL em `https://havan-loja.onrender.com`
 
 ## 📁 Estrutura de Arquivos
 
@@ -69,11 +82,12 @@ havan-clone/
 ├── checkout.js         # Lógica do checkout e integração Pix
 ├── styles.css          # Estilos CSS completos
 ├── script.js           # JavaScript para interatividade
-├── server/             # Backend Node.js (API Pix BlackCat)
-│   ├── index.js
-│   ├── routes/pix.js
-│   └── package.json
-├── .env.example        # Exemplo de variáveis de ambiente
+├── api/                # Serverless functions (Vercel)
+│   ├── health.js
+│   └── pix/
+│       ├── create.js
+│       └── status/[paymentId].js
+├── vercel.json         # Configuração Vercel
 └── README.md           # Este arquivo
 ```
 
