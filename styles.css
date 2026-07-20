@@ -3012,6 +3012,10 @@ main {
     border-bottom: 1px solid var(--border-color);
 }
 
+.checkout-summary-item img.checkout-summary-img--missing {
+    display: none;
+}
+
 .checkout-summary-item img {
     width: 64px;
     height: 64px;

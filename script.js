@@ -204,17 +204,7 @@ if (buyNowBtn) {
 
         let image = '';
         if (imgEl) {
-            const src = imgEl.getAttribute('src') || '';
-            if (src.startsWith('http')) {
-                try {
-                    const parsed = new URL(src);
-                    image = parsed.pathname.replace(/^\//, '');
-                } catch {
-                    image = src;
-                }
-            } else {
-                image = src;
-            }
+            image = imgEl.getAttribute('src') || imgEl.src || '';
         }
 
         const qty = qtyEl ? qtyEl.value : '1';

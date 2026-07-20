@@ -78,9 +78,13 @@ const checkoutFormError = document.getElementById('checkoutFormError');
 
 if (summaryImg) {
     summaryImg.src = productImage;
+    summaryImg.alt = productName;
+    summaryImg.referrerPolicy = 'no-referrer';
     summaryImg.classList.add('checkout-summary-img');
     summaryImg.onerror = () => {
-        summaryImg.src = 'banner-havan.png';
+        summaryImg.onerror = null;
+        summaryImg.removeAttribute('src');
+        summaryImg.classList.add('checkout-summary-img--missing');
     };
 }
 if (summaryName) summaryName.textContent = productName;
