@@ -61,6 +61,8 @@ const quizQuestions = [
     },
 ];
 
+const GENERIC_QUIZ_IMAGE = 'banner-havan.png';
+
 const introScreen = document.querySelector('[data-screen="intro"]');
 const questionScreen = document.querySelector('[data-screen="question"]');
 const resultScreen = document.querySelector('[data-screen="result"]');
@@ -84,13 +86,13 @@ function showScreen(screen) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderOptionIcon(option) {
+function renderOptionVisual(option) {
     if (option.stars) {
         const filled = '★'.repeat(option.stars);
         const empty = '☆'.repeat(5 - option.stars);
-        return `<span class="quiz-option-stars" aria-hidden="true">${filled}${empty}</span>`;
+        return `<span class="quiz-option-visual quiz-option-visual--stars" aria-hidden="true"><span class="quiz-option-stars">${filled}${empty}</span></span>`;
     }
-    return `<span class="quiz-option-icon" aria-hidden="true">${option.icon}</span>`;
+    return `<span class="quiz-option-visual" aria-hidden="true"><img src="${GENERIC_QUIZ_IMAGE}" alt=""></span>`;
 }
 
 function renderProgressDots() {
@@ -123,16 +125,18 @@ function renderQuestion() {
     optionsEl.innerHTML = '';
     optionsEl.hidden = false;
 
-    q.options.forEach((option) => {
+    q.options.forEach((option, index) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'quiz-option-btn';
+        btn.className = 'quiz-option-btn quiz-option-btn--card';
         btn.innerHTML = `
-            ${renderOptionIcon(option)}
+            ${renderOptionVisual(option)}
             <span class="quiz-option-text">${option.text}</span>
-            <span class="quiz-option-arrow" aria-hidden="true">›</span>
         `;
         if (option.stars) btn.classList.add('quiz-option-btn--stars');
+        if (q.options.length % 2 === 1 && index === q.options.length - 1) {
+            btn.classList.add('quiz-option-btn--wide');
+        }
         btn.addEventListener('click', () => selectAnswer(btn));
         optionsEl.appendChild(btn);
     });
