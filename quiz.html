@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Havan | Ganhe até 20% de desconto</title>
+    <title>Pesquisa Havan | Resgate seu benefício exclusivo</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,43 +149,108 @@
     <!-- Main Content -->
     <main class="quiz-page">
         <div class="quiz-hero">
-            <h1 class="quiz-hero-title">Pesquisa de Satisfação</h1>
+            <div class="quiz-hero-content">
+                <span class="quiz-hero-badge">Liquidação de Inverno 2026</span>
+                <h1 class="quiz-hero-title">Pesquisa Exclusiva Havan</h1>
+                <p class="quiz-hero-subtitle">Responda, libere seu benefício e escolha um produto com desconto especial</p>
+            </div>
+            <div class="quiz-hero-decoration" aria-hidden="true"></div>
         </div>
 
         <div class="quiz-container">
             <!-- Intro -->
             <div class="quiz-screen quiz-screen-intro active" data-screen="intro">
                 <div class="quiz-intro">
-                    <p class="quiz-intro-subtitle">Ajude-nos a melhorar sua experiência de compra.</p>
-                    <p class="quiz-intro-text">Responda a 5 perguntas rápidas. Ao finalizar, seu benefício promocional será liberado.</p>
+                    <div class="quiz-intro-icon" aria-hidden="true">
+                        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="28" r="28" fill="#0c3bdd" fill-opacity="0.1"/>
+                            <path d="M28 14L31.5 24.5H42.5L33.5 31L37 41.5L28 35L19 41.5L22.5 31L13.5 24.5H24.5L28 14Z" fill="#0c3bdd"/>
+                        </svg>
+                    </div>
+                    <h2 class="quiz-intro-title">Sua opinião vale um benefício real</h2>
+                    <p class="quiz-intro-text">A Havan quer conhecer você melhor. Em poucos cliques, você participa da nossa pesquisa de satisfação e libera um desconto exclusivo para usar em um produto da campanha.</p>
+
+                    <div class="quiz-prize-preview">
+                        <p class="quiz-prize-preview-label">Você pode ganhar:</p>
+                        <div class="quiz-prize-preview-grid">
+                            <span class="quiz-prize-chip">10% OFF</span>
+                            <span class="quiz-prize-chip">15% OFF</span>
+                            <span class="quiz-prize-chip quiz-prize-chip--highlight">20% OFF</span>
+                            <span class="quiz-prize-chip">Frete Grátis</span>
+                        </div>
+                    </div>
+
                     <ul class="quiz-intro-features">
-                        <li><span class="quiz-intro-feature-icon">✓</span> 5 perguntas rápidas</li>
-                        <li><span class="quiz-intro-feature-icon">✓</span> Tempo médio: 1 minuto</li>
-                        <li><span class="quiz-intro-feature-icon">✓</span> Participação válida nesta campanha</li>
+                        <li>
+                            <span class="quiz-intro-feature-icon">1</span>
+                            <span><strong>5 perguntas</strong> rápidas sobre sua experiência</span>
+                        </li>
+                        <li>
+                            <span class="quiz-intro-feature-icon">2</span>
+                            <span>Leva menos de <strong>1 minuto</strong> para concluir</span>
+                        </li>
+                        <li>
+                            <span class="quiz-intro-feature-icon">3</span>
+                            <span>Resgate o prêmio em <strong>um produto</strong> da loja</span>
+                        </li>
                     </ul>
-                    <button type="button" class="quiz-btn quiz-start-btn">Iniciar Pesquisa</button>
+
+                    <button type="button" class="quiz-btn quiz-start-btn">Começar pesquisa</button>
+                    <p class="quiz-intro-note">Participação válida nesta campanha promocional.</p>
                 </div>
             </div>
 
             <!-- Questions -->
             <div class="quiz-screen" data-screen="question">
-                <div class="quiz-progress-bar">
-                    <div class="quiz-progress-fill" style="width: 0%"></div>
+                <div class="quiz-question-header">
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="quiz-progress-meta">
+                        <span class="quiz-step-label">Pergunta <span class="quiz-step-current">1</span> de <span class="quiz-step-total">5</span></span>
+                        <span class="quiz-step-percent">0%</span>
+                    </div>
+                    <div class="quiz-progress-dots" id="quizProgressDots" aria-hidden="true"></div>
                 </div>
-                <div class="quiz-step-label">Pergunta <span class="quiz-step-current">1</span> de <span class="quiz-step-total">5</span></div>
-                <h2 class="quiz-question"></h2>
-                <div class="quiz-options"></div>
+
+                <p class="quiz-question-category" id="quizQuestionCategory"></p>
+                <h2 class="quiz-question" id="quizQuestionText"></h2>
+                <p class="quiz-question-hint" id="quizQuestionHint"></p>
+                <div class="quiz-options" id="quizOptions"></div>
+
+                <div class="quiz-analyzing" id="quizAnalyzing" hidden>
+                    <div class="quiz-analyzing-spinner"></div>
+                    <p>Analisando suas respostas...</p>
+                    <span>Preparando seu benefício exclusivo</span>
+                </div>
             </div>
 
             <!-- Result -->
             <div class="quiz-screen" data-screen="result">
                 <div class="quiz-result">
-                    <div class="quiz-gift-icon">🎉</div>
-                    <h2>Parabéns!</h2>
-                    <p class="quiz-result-text">Sua participação foi concluída com sucesso.<br>Seu acesso à campanha promocional foi liberado.<br>Clique no botão abaixo para visualizar os produtos participantes com até 90% de desconto.</p>
-                    <div class="quiz-result-actions">
-                        <a href="index.html" class="quiz-btn quiz-cta-btn">Ver Produtos</a>
+                    <div class="quiz-result-confetti" aria-hidden="true"></div>
+                    <div class="quiz-result-icon" aria-hidden="true">
+                        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="36" cy="36" r="36" fill="#059669" fill-opacity="0.12"/>
+                            <path d="M24 37L32 45L49 28" stroke="#059669" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
+                    <h2>Pesquisa concluída!</h2>
+                    <p class="quiz-result-lead">Parabéns! Seu acesso à campanha foi liberado com sucesso.</p>
+
+                    <div class="quiz-prize-card" id="quizPrizeCard">
+                        <span class="quiz-prize-card-label">Benefício liberado</span>
+                        <strong class="quiz-prize-card-value" id="quizPrizeValue">20% OFF</strong>
+                        <span class="quiz-prize-card-desc" id="quizPrizeDesc"></span>
+                        <span class="quiz-prize-card-code" id="quizPrizeCode"></span>
+                    </div>
+
+                    <p class="quiz-result-text">Escolha <strong>apenas um produto</strong> entre as ofertas participantes e finalize a compra para resgatar seu prêmio com até <strong>90% de desconto</strong>.</p>
+
+                    <div class="quiz-result-actions">
+                        <a href="index.html" class="quiz-btn quiz-cta-btn">Ver produtos em oferta</a>
+                    </div>
+                    <p class="quiz-result-note">O benefício é válido para um único item por participante.</p>
                 </div>
             </div>
         </div>
