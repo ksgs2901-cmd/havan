@@ -79,6 +79,7 @@ function finishQuiz() {
 
     try {
         localStorage.setItem('havan_coupon', JSON.stringify({ code: prize.code, label: prize.label, ts: Date.now() }));
+        localStorage.setItem('havan_prize_pending', '1');
     } catch (e) {
         // localStorage indisponível (modo privado etc.) - segue sem salvar
     }

@@ -215,6 +215,12 @@ if (buyNowBtn) {
             image,
             qty
         });
+
+        try {
+            localStorage.setItem('havan_prize_selected', name);
+            localStorage.removeItem('havan_prize_pending');
+        } catch (_) {}
+
         window.location.href = 'checkout.html?' + params.toString();
     });
 }
@@ -224,4 +230,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (totalSlides > 0) {
         showSlide(0);
     }
+    initPrizeNotice();
 });
+
+function initPrizeNotice() {
+    const notice = document.getElementById('prizeNotice');
+    if (!notice) return;
+
+    let shouldShow = false;
+    let couponLabel = '';
+
+    try {
+        shouldShow = localStorage.getItem('havan_prize_pending') === '1';
+        const coupon = JSON.parse(localStorage.getItem('havan_coupon'));
+        couponLabel = coupon?.label || '';
+    } catch (_) {
+        shouldShow = false;
+    }
+
+    if (!shouldShow) return;
+
+    const benefitEl = document.getElementById('prizeNoticeBenefit');
+    if (benefitEl && couponLabel) {
+        benefitEl.textContent = 'Benefício liberado: ' + couponLabel;
+        benefitEl.hidden = false;
+    }
+
+    notice.hidden = false;
+
+    const dismissBtn = document.getElementById('prizeNoticeDismiss');
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', () => {
+            notice.hidden = true;
+        });
+    }
+}
