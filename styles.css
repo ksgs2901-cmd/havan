@@ -2911,7 +2911,7 @@ main {
 }
 
 .quiz-question-visual {
-    margin: 0 auto 20px;
+    margin: 0 auto 16px;
     max-width: 280px;
     padding: 16px;
     border-radius: 16px;
