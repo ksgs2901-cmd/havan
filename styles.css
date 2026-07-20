@@ -2889,6 +2889,22 @@ main {
     flex-shrink: 0;
 }
 
+.quiz-option-btn--stars {
+    gap: 16px;
+}
+
+.quiz-option-stars {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 88px;
+    color: var(--rating-star);
+    font-size: 16px;
+    letter-spacing: 1px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
 .quiz-option-text {
     flex: 1;
 }
@@ -2991,18 +3007,6 @@ main {
     display: block;
     font-size: 14px;
     opacity: 0.9;
-    margin-bottom: 16px;
-}
-
-.quiz-prize-card-code {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px dashed rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 1px;
 }
 
 .quiz-result-text {
@@ -3077,6 +3081,12 @@ main {
         width: 36px;
         height: 36px;
         font-size: 16px;
+    }
+
+    .quiz-option-stars {
+        min-width: 76px;
+        font-size: 14px;
+        letter-spacing: 0.5px;
     }
 }
 

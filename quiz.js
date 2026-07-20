@@ -28,11 +28,11 @@ const quizQuestions = [
         question: 'Como você avalia a experiência de comprar na Havan?',
         hint: 'Sua avaliação nos ajuda a melhorar cada detalhe.',
         options: [
-            { text: 'Excelente', icon: '⭐⭐⭐⭐⭐' },
-            { text: 'Boa', icon: '⭐⭐⭐⭐' },
-            { text: 'Regular', icon: '⭐⭐⭐' },
-            { text: 'Ruim', icon: '⭐⭐' },
-            { text: 'Muito ruim', icon: '⭐' },
+            { text: 'Excelente', stars: 5 },
+            { text: 'Boa', stars: 4 },
+            { text: 'Regular', stars: 3 },
+            { text: 'Ruim', stars: 2 },
+            { text: 'Muito ruim', stars: 1 },
         ],
     },
     {
@@ -61,13 +61,6 @@ const quizQuestions = [
     },
 ];
 
-const prizePool = [
-    { code: 'HAVAN10', label: '10% OFF', desc: '10% de desconto no produto escolhido' },
-    { code: 'HAVAN15', label: '15% OFF', desc: '15% de desconto no produto escolhido' },
-    { code: 'HAVAN20', label: '20% OFF', desc: '20% de desconto no produto escolhido' },
-    { code: 'HAVANFRETE', label: 'Frete Grátis', desc: 'Frete grátis no produto escolhido' },
-];
-
 const introScreen = document.querySelector('[data-screen="intro"]');
 const questionScreen = document.querySelector('[data-screen="question"]');
 const resultScreen = document.querySelector('[data-screen="result"]');
@@ -82,10 +75,6 @@ const hintEl = document.getElementById('quizQuestionHint');
 const optionsEl = document.getElementById('quizOptions');
 const progressDotsEl = document.getElementById('quizProgressDots');
 const analyzingEl = document.getElementById('quizAnalyzing');
-const prizeValueEl = document.getElementById('quizPrizeValue');
-const prizeDescEl = document.getElementById('quizPrizeDesc');
-const prizeCodeEl = document.getElementById('quizPrizeCode');
-
 let currentQuestion = 0;
 let isTransitioning = false;
 
@@ -93,6 +82,15 @@ function showScreen(screen) {
     [introScreen, questionScreen, resultScreen].forEach(s => s.classList.remove('active'));
     screen.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderOptionIcon(option) {
+    if (option.stars) {
+        const filled = '★'.repeat(option.stars);
+        const empty = '☆'.repeat(5 - option.stars);
+        return `<span class="quiz-option-stars" aria-hidden="true">${filled}${empty}</span>`;
+    }
+    return `<span class="quiz-option-icon" aria-hidden="true">${option.icon}</span>`;
 }
 
 function renderProgressDots() {
@@ -130,10 +128,11 @@ function renderQuestion() {
         btn.type = 'button';
         btn.className = 'quiz-option-btn';
         btn.innerHTML = `
-            <span class="quiz-option-icon" aria-hidden="true">${option.icon}</span>
+            ${renderOptionIcon(option)}
             <span class="quiz-option-text">${option.text}</span>
             <span class="quiz-option-arrow" aria-hidden="true">›</span>
         `;
+        if (option.stars) btn.classList.add('quiz-option-btn--stars');
         btn.addEventListener('click', () => selectAnswer(btn));
         optionsEl.appendChild(btn);
     });
@@ -176,18 +175,13 @@ function showAnalyzingThenFinish() {
 }
 
 function finishQuiz() {
-    const prize = prizePool[Math.floor(Math.random() * prizePool.length)];
-
     try {
-        localStorage.setItem('havan_coupon', JSON.stringify({ code: prize.code, label: prize.label, ts: Date.now() }));
+        localStorage.setItem('havan_quiz_completed', '1');
         localStorage.setItem('havan_prize_pending', '1');
+        localStorage.removeItem('havan_coupon');
     } catch (e) {
         // localStorage indisponível
     }
-
-    if (prizeValueEl) prizeValueEl.textContent = prize.label;
-    if (prizeDescEl) prizeDescEl.textContent = prize.desc;
-    if (prizeCodeEl) prizeCodeEl.textContent = 'Código: ' + prize.code;
 
     isTransitioning = false;
     showScreen(resultScreen);
