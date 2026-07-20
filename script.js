@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showSlide(0);
     }
     initPrizeNotice();
+    initProductStockBadges();
 });
 
 function initPrizeNotice() {
@@ -255,4 +256,58 @@ function initPrizeNotice() {
             notice.hidden = true;
         });
     }
+}
+
+function getProductCardKey(card) {
+    const link = card.querySelector('.product-name a, .product-image');
+    return link ? (link.getAttribute('href') || link.textContent.trim()) : '';
+}
+
+function parsePopularity(card) {
+    const countEl = card.querySelector('.rating-count');
+    const match = countEl?.textContent.match(/\((\d+)\)/);
+    return match ? parseInt(match[1], 10) : 50;
+}
+
+function getStockForRank(rank, total) {
+    const ratio = total <= 1 ? 0 : rank / (total - 1);
+    const min = Math.max(3, Math.round(3 + ratio * 5));
+    const max = Math.min(12, Math.max(min, Math.round(6 + ratio * 6)));
+    return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function initProductStockBadges() {
+    const cards = Array.from(document.querySelectorAll('.products-grid .product-card'));
+    if (!cards.length) return;
+
+    const ranked = cards
+        .map((card) => ({ card, popularity: parsePopularity(card), key: getProductCardKey(card) }))
+        .sort((a, b) => b.popularity - a.popularity);
+
+    ranked.forEach((item, rank) => {
+        const storageKey = 'havan_stock_' + item.key;
+        let stock;
+
+        try {
+            const saved = localStorage.getItem(storageKey);
+            stock = saved ? parseInt(saved, 10) : null;
+        } catch (_) {
+            stock = null;
+        }
+
+        if (!stock || stock < 3 || stock > 12) {
+            stock = getStockForRank(rank, ranked.length);
+            try {
+                localStorage.setItem(storageKey, String(stock));
+            } catch (_) {}
+        }
+
+        const imageWrap = item.card.querySelector('.product-image');
+        if (!imageWrap) return;
+
+        const badge = document.createElement('span');
+        badge.className = 'product-stock-badge' + (stock <= 5 ? ' product-stock-badge--low' : '');
+        badge.textContent = `Restam ${stock} unidades`;
+        imageWrap.appendChild(badge);
+    });
 }
