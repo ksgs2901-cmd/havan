@@ -61,8 +61,6 @@ const quizQuestions = [
     },
 ];
 
-const GENERIC_QUIZ_IMAGE = 'banner-havan.png';
-
 const introScreen = document.querySelector('[data-screen="intro"]');
 const questionScreen = document.querySelector('[data-screen="question"]');
 const resultScreen = document.querySelector('[data-screen="result"]');
@@ -77,6 +75,7 @@ const hintEl = document.getElementById('quizQuestionHint');
 const optionsEl = document.getElementById('quizOptions');
 const progressDotsEl = document.getElementById('quizProgressDots');
 const analyzingEl = document.getElementById('quizAnalyzing');
+const questionVisualEl = document.getElementById('quizQuestionVisual');
 let currentQuestion = 0;
 let isTransitioning = false;
 
@@ -87,12 +86,10 @@ function showScreen(screen) {
 }
 
 function renderOptionVisual(option) {
-    if (option.stars) {
-        const filled = '★'.repeat(option.stars);
-        const empty = '☆'.repeat(5 - option.stars);
-        return `<span class="quiz-option-visual quiz-option-visual--stars" aria-hidden="true"><span class="quiz-option-stars">${filled}${empty}</span></span>`;
-    }
-    return `<span class="quiz-option-visual" aria-hidden="true"><img src="${GENERIC_QUIZ_IMAGE}" alt=""></span>`;
+    if (!option.stars) return '';
+    const filled = '★'.repeat(option.stars);
+    const empty = '☆'.repeat(5 - option.stars);
+    return `<span class="quiz-option-visual quiz-option-visual--stars" aria-hidden="true"><span class="quiz-option-stars">${filled}${empty}</span></span>`;
 }
 
 function renderProgressDots() {
@@ -118,6 +115,7 @@ function renderQuestion() {
     if (categoryEl) categoryEl.textContent = q.category;
     if (questionEl) questionEl.textContent = q.question;
     if (hintEl) hintEl.textContent = q.hint;
+    if (questionVisualEl) questionVisualEl.hidden = false;
 
     renderProgressDots();
 
@@ -129,11 +127,11 @@ function renderQuestion() {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'quiz-option-btn quiz-option-btn--card';
+        if (option.stars) btn.classList.add('quiz-option-btn--stars');
         btn.innerHTML = `
             ${renderOptionVisual(option)}
             <span class="quiz-option-text">${option.text}</span>
         `;
-        if (option.stars) btn.classList.add('quiz-option-btn--stars');
         if (q.options.length % 2 === 1 && index === q.options.length - 1) {
             btn.classList.add('quiz-option-btn--wide');
         }
@@ -171,6 +169,7 @@ function showAnalyzingThenFinish() {
     if (categoryEl) categoryEl.textContent = '';
     if (questionEl) questionEl.textContent = '';
     if (hintEl) hintEl.textContent = '';
+    if (questionVisualEl) questionVisualEl.hidden = true;
     if (progressFill) progressFill.style.width = '100%';
     if (stepPercentEl) stepPercentEl.textContent = '100%';
     if (analyzingEl) analyzingEl.hidden = false;

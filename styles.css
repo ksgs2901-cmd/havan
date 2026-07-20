@@ -2878,8 +2878,23 @@ main {
 .quiz-question-hint {
     font-size: 14px;
     color: var(--price-old);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     line-height: 1.5;
+}
+
+.quiz-question-visual {
+    margin: 0 auto 20px;
+    max-width: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(12, 59, 221, 0.12);
+}
+
+.quiz-question-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .quiz-options {
@@ -3125,6 +3140,10 @@ main {
 
     .quiz-question {
         font-size: 20px;
+    }
+
+    .quiz-question-visual {
+        margin-bottom: 16px;
     }
 
     .quiz-prize-card-value {
