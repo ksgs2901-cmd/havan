@@ -200,14 +200,7 @@ if (buyNowBtn) {
 
         const name = titleEl ? titleEl.textContent.trim() : 'Produto Havan';
         const priceText = priceEl ? priceEl.textContent : '0';
-        const price = window.HavanPrice
-            ? window.HavanPrice.parse(priceText)
-            : parseFloat(priceText.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-
-        const catalogEntry = window.HavanPrice
-            ? window.HavanPrice.getEntry(window.location.pathname)
-            : null;
-        const oldPrice = catalogEntry ? catalogEntry.old : '';
+        const price = parseFloat(priceText.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
 
         let image = '';
         if (imgEl) {
@@ -219,7 +212,6 @@ if (buyNowBtn) {
         const params = new URLSearchParams({
             name,
             price: String(price),
-            oldPrice: oldPrice ? String(oldPrice) : '',
             image,
             qty
         });
@@ -315,7 +307,7 @@ function initProductStockBadges() {
 
         const badge = document.createElement('span');
         badge.className = 'product-stock-badge' + (stock <= 5 ? ' product-stock-badge--low' : '');
-        badge.textContent = stock <= 5 ? `Últimas ${stock} unidades` : `Restam ${stock} unidades`;
+        badge.textContent = `Restam ${stock} unidades`;
         imageWrap.appendChild(badge);
     });
 }
