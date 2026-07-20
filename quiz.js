@@ -75,7 +75,6 @@ const hintEl = document.getElementById('quizQuestionHint');
 const optionsEl = document.getElementById('quizOptions');
 const progressDotsEl = document.getElementById('quizProgressDots');
 const analyzingEl = document.getElementById('quizAnalyzing');
-const questionVisualEl = document.getElementById('quizQuestionVisual');
 let currentQuestion = 0;
 let isTransitioning = false;
 
@@ -115,7 +114,6 @@ function renderQuestion() {
     if (categoryEl) categoryEl.textContent = q.category;
     if (questionEl) questionEl.textContent = q.question;
     if (hintEl) hintEl.textContent = q.hint;
-    if (questionVisualEl) questionVisualEl.hidden = false;
 
     renderProgressDots();
 
@@ -169,7 +167,6 @@ function showAnalyzingThenFinish() {
     if (categoryEl) categoryEl.textContent = '';
     if (questionEl) questionEl.textContent = '';
     if (hintEl) hintEl.textContent = '';
-    if (questionVisualEl) questionVisualEl.hidden = true;
     if (progressFill) progressFill.style.width = '100%';
     if (stepPercentEl) stepPercentEl.textContent = '100%';
     if (analyzingEl) analyzingEl.hidden = false;

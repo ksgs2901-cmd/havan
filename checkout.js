@@ -2,6 +2,7 @@
 const params = new URLSearchParams(window.location.search);
 const productName = params.get('name') || 'Produto Havan';
 const productPrice = parseFloat(params.get('price')) || 0;
+const productOldPrice = parseFloat(params.get('oldPrice')) || 0;
 const productImage = params.get('image') || 'banner-havan.png';
 const productQty = parseInt(params.get('qty'), 10) || 1;
 
@@ -62,7 +63,7 @@ async function fetchApi(paths, options = {}) {
         }
     }
 
-    throw lastError || new Error('Servidor indisponível. Clique duas vezes em iniciar-site.bat para abrir a loja.');
+    throw lastError || new Error('Não foi possível conectar ao servidor. Tente novamente em alguns instantes.');
 }
 
 function formatBRL(value) {
@@ -74,6 +75,10 @@ const summaryName = document.getElementById('summaryName');
 const summaryQty = document.getElementById('summaryQty');
 const summarySubtotal = document.getElementById('summarySubtotal');
 const summaryTotal = document.getElementById('summaryTotal');
+const summaryOldPrice = document.getElementById('summaryOldPrice');
+const summaryOldPriceRow = document.getElementById('summaryOldPriceRow');
+const summarySavings = document.getElementById('summarySavings');
+const summarySavingsRow = document.getElementById('summarySavingsRow');
 const checkoutFormError = document.getElementById('checkoutFormError');
 
 if (summaryImg) {
@@ -92,6 +97,14 @@ if (summaryQty) summaryQty.textContent = 'Quantidade: ' + productQty;
 const subtotal = productPrice * productQty;
 if (summarySubtotal) summarySubtotal.textContent = formatBRL(subtotal);
 if (summaryTotal) summaryTotal.textContent = formatBRL(subtotal);
+
+if (productOldPrice > productPrice) {
+    const savings = (productOldPrice - productPrice) * productQty;
+    if (summaryOldPrice) summaryOldPrice.textContent = formatBRL(productOldPrice * productQty);
+    if (summarySavings) summarySavings.textContent = formatBRL(savings);
+    if (summaryOldPriceRow) summaryOldPriceRow.hidden = false;
+    if (summarySavingsRow) summarySavingsRow.hidden = false;
+}
 
 function showFormError(message) {
     if (!checkoutFormError) return;
@@ -187,7 +200,7 @@ function getShippingData() {
 
 function validateCheckoutData() {
     if (window.location.protocol === 'file:') {
-        return 'Clique duas vezes em iniciar-site.bat para abrir a loja corretamente.';
+        return 'Para finalizar sua compra, acesse o site pela loja oficial e clique em Comprar agora.';
     }
 
     if (!subtotal || subtotal <= 0) {
@@ -304,7 +317,7 @@ async function parseJsonResponse(response, options = {}) {
         if (options.allowHtmlError) {
             throw new Error('offline');
         }
-        throw new Error('Servidor indisponível. Clique duas vezes em iniciar-site.bat para abrir a loja.');
+        throw new Error('Não foi possível conectar ao servidor. Tente novamente em alguns instantes.');
     }
 }
 
@@ -458,7 +471,7 @@ async function checkServerOnLoad() {
         await fetchApi(API_ENDPOINTS.health, { method: 'GET' });
         clearFormError();
     } catch {
-        showFormError('Para usar o checkout, clique duas vezes em iniciar-site.bat (Windows) ou execute ./iniciar-site.sh');
+        showFormError('Não foi possível conectar ao servidor no momento. Atualize a página e tente novamente.');
     }
 }
 

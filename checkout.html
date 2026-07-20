@@ -146,6 +146,23 @@
         </div>
     </div>
 
+    <div class="trust-bar">
+        <div class="container trust-bar-inner">
+            <span class="trust-bar-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L4 6v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V6l-8-4z" stroke="currentColor" stroke-width="2"/></svg>
+                Compra 100% segura
+            </span>
+            <span class="trust-bar-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+                Ambiente protegido
+            </span>
+            <span class="trust-bar-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16v10H4z" stroke="currentColor" stroke-width="2"/><path d="M4 10h16" stroke="currentColor" stroke-width="2"/></svg>
+                Pagamento via Pix
+            </span>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <main class="checkout-page">
         <div class="container">
@@ -233,7 +250,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="quiz-btn checkout-continue-btn">Continuar para pagamento</button>
+                            <button type="submit" class="checkout-btn checkout-continue-btn">Continuar para pagamento</button>
                             <p class="checkout-form-error" id="checkoutFormError" hidden></p>
                         </form>
                     </div>
@@ -246,7 +263,7 @@
                             <p class="pix-instructions">Abra o app do seu banco, escaneie o QR Code ou copie o código Pix abaixo.</p>
                             <div class="pix-copy-row">
                                 <input type="text" id="pixCode" readonly>
-                                <button type="button" id="pixCopyBtn" class="quiz-btn quiz-btn-outline">Copiar código</button>
+                                <button type="button" id="pixCopyBtn" class="checkout-btn checkout-btn-outline">Copiar código</button>
                             </div>
                             <div class="pix-status" id="pixStatus">
                                 <div class="pix-spinner"></div>
@@ -262,7 +279,7 @@
                             <div class="checkout-success-icon">✓</div>
                             <h2>Pagamento confirmado!</h2>
                             <p>Seu pedido <strong id="orderNumber"></strong> foi recebido e já está sendo preparado para envio.</p>
-                            <a href="index.html" class="quiz-btn">Voltar para a loja</a>
+                            <a href="index.html" class="checkout-btn">Voltar para a loja</a>
                         </div>
                     </div>
                 </div>
@@ -278,6 +295,14 @@
                         </div>
                     </div>
                     <div class="checkout-summary-totals">
+                        <div class="checkout-summary-row" id="summaryOldPriceRow" hidden>
+                            <span>De</span>
+                            <span id="summaryOldPrice" class="checkout-summary-old"></span>
+                        </div>
+                        <div class="checkout-summary-row checkout-summary-savings" id="summarySavingsRow" hidden>
+                            <span>Você economiza</span>
+                            <span id="summarySavings"></span>
+                        </div>
                         <div class="checkout-summary-row">
                             <span>Subtotal</span>
                             <span id="summarySubtotal"></span>
@@ -291,7 +316,14 @@
                             <span id="summaryTotal"></span>
                         </div>
                     </div>
-                    <p class="checkout-demo-notice">Pagamento seguro via Pix (BlackCat).</p>
+                    <div class="checkout-trust">
+                        <p class="checkout-trust-title">Compra protegida</p>
+                        <ul class="checkout-trust-list">
+                            <li>Dados criptografados</li>
+                            <li>Pagamento confirmado pelo Banco Central</li>
+                            <li>Atendimento Havan</li>
+                        </ul>
+                    </div>
                 </aside>
             </div>
         </div>
@@ -320,12 +352,14 @@
                     <li><a href="#">Troca e devolução</a></li>
                 </ul>
                 <p class="footer-copyright">
-                    © 1986 - 2025 HAVAN S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil, 250 - Centro II, Brusque - SC, 88353-100
+                    © 1986 - 2026 HAVAN S.A. CNPJ: 79.379.491.0008-50 | Rod. Antônio Heil, 250 - Centro II, Brusque - SC, 88353-100
                 </p>
             </div>
         </div>
     </footer>
 
+    <script src="products-data.js"></script>
+    <script src="products-ui.js"></script>
     <script src="script.js"></script>
     <script src="checkout.js"></script>
 </body>
