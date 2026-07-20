@@ -6,14 +6,14 @@
     <title>Havan | Tudo num só Lugar</title>
     <script>
         (function () {
-            var hasCoupon = false;
+            var hasAccess = false;
             try {
-                var coupon = JSON.parse(localStorage.getItem('havan_coupon'));
-                hasCoupon = !!(coupon && coupon.code);
+                hasAccess = localStorage.getItem('havan_quiz_completed') === '1'
+                    || localStorage.getItem('havan_prize_pending') === '1';
             } catch (e) {
-                hasCoupon = false;
+                hasAccess = false;
             }
-            if (!hasCoupon) {
+            if (!hasAccess) {
                 window.location.replace('quiz.html');
             }
         })();
@@ -125,8 +125,8 @@
     <div class="prize-notice" id="prizeNotice" hidden>
         <div class="container prize-notice-inner">
             <div class="prize-notice-content">
-                <p class="prize-notice-title">Resgate seu benefício promocional</p>
-                <p class="prize-notice-text">Parabéns! Sua participação na pesquisa foi validada com sucesso. Para resgatar seu prêmio, escolha <strong>apenas um produto</strong> entre as ofertas abaixo e finalize a compra. O benefício é válido para um único item por participante.</p>
+                <p class="prize-notice-title">Resgate seu prêmio promocional</p>
+                <p class="prize-notice-text">Parabéns! Sua participação na pesquisa foi validada com sucesso. Para resgatar seu prêmio, escolha <strong>apenas um produto</strong> entre as ofertas abaixo e finalize a compra com o valor promocional exclusivo. O prêmio é válido para um único item por participante.</p>
             </div>
             <button type="button" class="prize-notice-close" id="prizeNoticeDismiss" aria-label="Fechar aviso">&times;</button>
         </div>
