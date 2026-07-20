@@ -539,6 +539,31 @@ main {
     z-index: 2;
 }
 
+.product-stock-badge {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid #fbbf24;
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.product-stock-badge--low {
+    border-color: #f87171;
+    color: #b91c1c;
+    background: #fff5f5;
+}
+
 .wishlist-btn {
     position: absolute;
     top: 15px;
@@ -562,6 +587,7 @@ main {
     width: 100%;
     margin-bottom: 15px;
     text-decoration: none;
+    position: relative;
 }
 
 .product-image img {
