@@ -1215,6 +1215,10 @@ main {
     
     .header-location .location-loading {
         display: block;
+        max-width: calc(100vw - 48px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     
     .header-location .container {

@@ -11,12 +11,26 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+function getClientIp(req) {
+    const forwarded = req.headers['x-forwarded-for'];
+    if (forwarded) {
+        return String(forwarded).split(',')[0].trim();
+    }
+    const realIp = req.headers['x-real-ip'];
+    if (realIp) return String(realIp).trim();
+    return req.socket?.remoteAddress || 'Desconhecido';
+}
+
 app.get('/api/health', (_req, res) => {
     const { getApiKey } = require('./lib/blackcat');
     res.json({
         ok: true,
         pixConfigured: Boolean(getApiKey())
     });
+});
+
+app.get('/api/ip', (req, res) => {
+    res.json({ ip: getClientIp(req) });
 });
 
 app.use('/api/pix', pixRoutes);
