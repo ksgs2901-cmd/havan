@@ -238,23 +238,14 @@ function initPrizeNotice() {
     if (!notice) return;
 
     let shouldShow = false;
-    let couponLabel = '';
 
     try {
         shouldShow = localStorage.getItem('havan_prize_pending') === '1';
-        const coupon = JSON.parse(localStorage.getItem('havan_coupon'));
-        couponLabel = coupon?.label || '';
     } catch (_) {
         shouldShow = false;
     }
 
     if (!shouldShow) return;
-
-    const benefitEl = document.getElementById('prizeNoticeBenefit');
-    if (benefitEl && couponLabel) {
-        benefitEl.textContent = 'Benefício liberado: ' + couponLabel;
-        benefitEl.hidden = false;
-    }
 
     notice.hidden = false;
 

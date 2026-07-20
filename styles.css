@@ -2450,19 +2450,6 @@ main {
     padding-right: 36px;
 }
 
-.prize-notice-badge {
-    flex-shrink: 0;
-    background: var(--primary-blue);
-    color: var(--text-light);
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    white-space: nowrap;
-}
-
 .prize-notice-content {
     flex: 1;
     min-width: 0;
@@ -2511,11 +2498,6 @@ main {
         flex-direction: column;
         gap: 10px;
         padding-right: 28px;
-    }
-
-    .prize-notice-badge {
-        align-self: flex-start;
-        white-space: normal;
     }
 
     .prize-notice-title {
