@@ -2926,10 +2926,6 @@ main {
     object-fit: contain;
 }
 
-.trust-bar--quiz {
-    background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-}
 
 .quiz-option-btn--icon {
     flex-direction: row;
