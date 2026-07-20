@@ -33,6 +33,24 @@ app.get('/api/ip', (req, res) => {
     res.json({ ip: getClientIp(req) });
 });
 
+app.get('/api/location', async (req, res) => {
+    const ip = getClientIp(req);
+
+    try {
+        const geoRes = await fetch(`https://ipwho.is/${encodeURIComponent(ip)}`);
+        const data = await geoRes.json();
+
+        if (data && data.success !== false && data.city) {
+            const label = data.region_code ? `${data.city} - ${data.region_code}` : data.city;
+            return res.json({ city: data.city, region: data.region_code, label });
+        }
+    } catch (_) {
+        // tenta fallback abaixo
+    }
+
+    res.status(502).json({ error: 'Não foi possível obter localização' });
+});
+
 app.use('/api/pix', pixRoutes);
 app.use(express.static(path.join(__dirname, '..')));
 

@@ -1,20 +1,20 @@
-// Exibe o IP público do visitante no campo "Enviar para"
+// Exibe a cidade do visitante no campo "Enviar para"
 const locationPlaceholders = document.querySelectorAll('.location-placeholder');
 const locationLoadingEls = document.querySelectorAll('.location-loading');
 
-function setVisitorIp(ip) {
-    if (!ip) return;
-    locationPlaceholders.forEach(el => { el.textContent = ip; });
-    locationLoadingEls.forEach(el => { el.textContent = ip; });
+function setVisitorLocation(label) {
+    if (!label) return;
+    locationPlaceholders.forEach(el => { el.textContent = label; });
+    locationLoadingEls.forEach(el => { el.textContent = label; });
 }
 
-async function loadVisitorIp() {
+async function loadVisitorLocation() {
     try {
-        const res = await fetch('/api/ip');
+        const res = await fetch('/api/location');
         if (res.ok) {
             const data = await res.json();
-            if (data?.ip) {
-                setVisitorIp(data.ip);
+            if (data?.label) {
+                setVisitorLocation(data.label);
                 return;
             }
         }
@@ -23,16 +23,19 @@ async function loadVisitorIp() {
     }
 
     try {
-        const res = await fetch('https://api.ipify.org?format=json');
+        const res = await fetch('https://ipwho.is/');
         const data = await res.json();
-        setVisitorIp(data?.ip);
+        if (data?.city) {
+            const label = data.region_code ? `${data.city} - ${data.region_code}` : data.city;
+            setVisitorLocation(label);
+        }
     } catch (_) {
-        // Mantém "Digite o CEP" / "Carregando" se não conseguir obter o IP
+        // Mantém "Digite o CEP" / "Carregando" se não conseguir obter a cidade
     }
 }
 
 if (locationPlaceholders.length || locationLoadingEls.length) {
-    loadVisitorIp();
+    loadVisitorLocation();
 }
 
 // Carousel functionality
